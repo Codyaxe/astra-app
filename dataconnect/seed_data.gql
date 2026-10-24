@@ -1,0 +1,14 @@
+# Seed Data: At most 3 fake rows per table for emulator testing.
+# Fake data only - no real member data.
+
+mutation SeedInitialData @auth(level: NO_ACCESS) {
+  partner1: partner_insert(data: { name: "Campus Cafe", description: "Coffee & snacks" })
+  partner2: partner_insert(data: { name: "Dev Print Lab", description: "3D printing" })
+
+  member1: member_insert(data: { studentId: "S1001", email: "member1@astra.local", fullName: "Jane Doe", isPaid: true, role: "member" })
+  member2: member_insert(data: { studentId: "S1002", email: "member2@astra.local", fullName: "John Smith", isPaid: false, role: "member" })
+  member3: member_insert(data: { studentId: "S1003", email: "officer1@astra.local", fullName: "Alex Rivera", isPaid: true, role: "officer" })
+
+  event1: event_insert(data: { title: "Orientation Hackathon", pointsValue: 15, eventDate: "2026-11-01T09:00:00Z" })
+  event2: event_insert(data: { title: "Cloud Workshop", pointsValue: 10, eventDate: "2026-11-08T13:00:00Z" })
+}

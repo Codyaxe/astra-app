@@ -1,0 +1,12 @@
+# Example query for SDK generation
+query ListEvents @auth(level: PUBLIC) {
+  events {
+    id
+    title
+    description
+    pointsValue
+    eventDate
+  }
+}
+
+# TODO(AI/Backend): Add queries for Member profile, PointsLedger history, Partner perks, Attendance records, and Vouchers
