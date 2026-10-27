@@ -1,9 +1,10 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Menu, Moon, Sun, X } from 'lucide-react';
 import { RequestStateProvider } from './RequestState';
 import logo from './assets/logo-blue.png';
 import whiteLogo from './assets/logo-white.png';
-import whiteWordmark from './assets/wordmark-white.png';
+import { brand, button, container, focus } from './styles';
 import './astrascend.css';
 
 type Appearance = 'system' | 'light' | 'dark';
@@ -18,10 +19,20 @@ function savedAppearance(): Appearance {
   } catch { return 'system'; }
 }
 
+function BrandWordmark({ inverse = false }: { inverse?: boolean }) {
+  return <>
+    <img className="h-[var(--as-mark-height)] w-[calc(var(--as-mark-height)*550/535)] shrink-0" src={inverse ? whiteLogo : logo} alt="" width="35" height="34" />
+    <span className="inline-flex items-baseline gap-[calc(var(--as-mark-height)*.19)] text-[length:calc(var(--as-mark-height)*.565)] font-normal leading-none tracking-[-.025em]"><strong className="font-bold tracking-[-.04em]">ASTRA</strong>{' '}<span>Developers</span></span>
+  </>;
+}
+
 export function AstrascendLayout() {
   const [appearance, setAppearance] = useState<Appearance>(savedAppearance);
   const [darkSystem, setDarkSystem] = useState(systemDark);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [atTop, setAtTop] = useState(() => window.scrollY <= 24);
+  const headerRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
   const theme = appearance === 'system' ? darkSystem ? 'dark' : 'light' : appearance;
   useEffect(() => {
@@ -32,10 +43,24 @@ export function AstrascendLayout() {
     return () => media.removeEventListener('change', update);
   }, []);
   useEffect(() => {
+    const update = () => setAtTop(window.scrollY <= 24);
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, []);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const closeOutside = (event: PointerEvent) => {
+      if (!headerRef.current?.contains(event.target as Node)) setMenuOpen(false);
+    };
+    document.addEventListener('pointerdown', closeOutside);
+    return () => document.removeEventListener('pointerdown', closeOutside);
+  }, [menuOpen]);
+  useEffect(() => {
     setMenuOpen(false);
     if (location.hash) document.getElementById(location.hash.slice(1))?.scrollIntoView?.({ behavior: 'instant' });
     else window.scrollTo?.({ top: 0 });
-  }, [location.pathname, location.hash]);
+  }, [location.pathname, location.hash, location.key]);
   useEffect(() => {
     const previousTitle = document.title;
     document.title = 'ASTRAscend | ASTRA Developers';
@@ -46,33 +71,44 @@ export function AstrascendLayout() {
     try { localStorage.setItem(THEME_KEY, next); } catch { /* Appearance still works when storage is unavailable. */ }
   };
   return <ThemeContext.Provider value={theme}><RequestStateProvider>
-    <div className="astrascend" data-theme={theme}>
-      <a className="as-skip" href="#as-main">Skip to content</a>
-      <header className="as-header">
-        <div className="as-container as-header-inner">
-          <Link to="/astrascend" className="as-brand" aria-label="ASTRAscend home">
-            <img src={theme === 'dark' ? whiteLogo : logo} alt="" width="35" height="34" />
-            <span>ASTRA Developers</span><small>ASTRAscend</small>
+    <div className="astrascend isolate min-h-[100dvh] bg-ascend-page font-astrascend text-[16px] leading-[1.5] text-ascend-ink [color-scheme:light] data-[theme=dark]:[color-scheme:dark] [--as-header-height:80px] lg:[--as-header-height:96px] as-compact:[--as-header-height:65px]" data-theme={theme}>
+      <a className={`fixed left-4 top-3 z-30 -translate-y-[200%] bg-ascend-panel p-3 focus:translate-y-0 ${focus}`} href="#as-main">Skip to content</a>
+      <header className="sticky top-0 z-20 border-b border-ascend-line bg-ascend-panel as-dark:bg-[#070c1d]" ref={headerRef} onKeyDown={event => {
+        if (event.key === 'Escape' && menuOpen) {
+          setMenuOpen(false);
+          menuButtonRef.current?.focus();
+        }
+      }}>
+        <div className={`${container} flex min-h-20 flex-wrap items-center gap-2 py-4 sm:gap-4 lg:min-h-24 lg:flex-nowrap lg:gap-[22px] lg:py-5 as-tiny:gap-1.5 as-compact:min-h-[65px] as-compact:gap-5 as-compact:py-2`}>
+          <Link to="/astrascend" className={`${brand} [--as-mark-height:30px] sm:[--as-mark-height:34px] as-tiny:[--as-mark-height:26px] as-compact:[--as-mark-height:31px]`} aria-label="ASTRAscend home">
+            <BrandWordmark inverse={theme === 'dark'} /><small className="hidden border-l border-ascend-line pl-2.5 text-[16px] text-ascend-muted as-label:inline as-wide:inline as-compact:text-[14px]">ASTRAscend</small>
           </Link>
-          <button type="button" className="as-menu-button" aria-expanded={menuOpen} aria-controls="as-navigation" onClick={() => setMenuOpen(open => !open)}>Menu {menuOpen ? '−' : '+'}</button>
-          <nav id="as-navigation" className={`as-nav${menuOpen ? ' as-nav--open' : ''}`} aria-label="ASTRAscend">
-            <Link to="/astrascend#services" onClick={() => setMenuOpen(false)}>Services</Link>
-            <Link to="/astrascend#how-it-works" onClick={() => setMenuOpen(false)}>How it works</Link>
-            <Link to="/astrascend#community" onClick={() => setMenuOpen(false)}>Community</Link>
-            <Link className="as-button" to="/astrascend/request" onClick={() => setMenuOpen(false)}>Start a request</Link>
+          <button type="button" className={`ml-auto inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-ascend-line bg-ascend-input p-0 text-ascend-ink hover:bg-ascend-selected hover:text-ascend-accent lg:hidden ${focus}`} ref={menuButtonRef}
+            aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen}
+            aria-controls="as-navigation" onClick={() => setMenuOpen(open => !open)}>
+            {menuOpen ? <X size={24} strokeWidth={1.8} aria-hidden="true" /> : <Menu size={24} strokeWidth={1.8} aria-hidden="true" />}
+          </button>
+          <nav id="as-navigation" className={`${menuOpen ? 'flex' : 'hidden'} absolute inset-x-0 top-full max-h-[calc(100dvh_-_var(--as-header-height))] flex-col items-stretch gap-2 overflow-y-auto border-b border-ascend-line bg-ascend-panel px-5 pb-6 pt-5 text-[15px] font-semibold shadow-[0_12px_20px_#0b14371a] sm:px-8 lg:static lg:flex lg:max-h-none lg:flex-1 lg:flex-row lg:items-center lg:justify-end lg:gap-5 lg:overflow-visible lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none as-wide:gap-6 as-compact:gap-[22px] as-compact:text-[14px]`} aria-label="ASTRAscend">
+            <Link className={`flex min-h-11 items-center hover:text-ascend-accent hover:underline hover:underline-offset-[5px] lg:min-h-0 ${focus}`} to="/astrascend#services" onClick={() => setMenuOpen(false)}>Services</Link>
+            <Link className={`flex min-h-11 items-center hover:text-ascend-accent hover:underline hover:underline-offset-[5px] lg:min-h-0 ${focus}`} to="/astrascend#how-it-works" onClick={() => setMenuOpen(false)}>How it works</Link>
+            <Link className={`flex min-h-11 items-center hover:text-ascend-accent hover:underline hover:underline-offset-[5px] lg:min-h-0 ${focus}`} to="/astrascend#community" onClick={() => setMenuOpen(false)}>Community</Link>
+            <Link className={`${button('primary', 'nav')} mt-1 self-start lg:mt-0 lg:self-auto`} to="/astrascend/request" onClick={() => setMenuOpen(false)}>Start a request</Link>
           </nav>
-          <label className="as-appearance"><span className="as-sr-only">Appearance</span>
-            <select aria-label="Appearance" value={appearance} onChange={event => changeAppearance(event.target.value as Appearance)}>
-              <option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option>
-            </select>
-          </label>
         </div>
       </header>
-      <main id="as-main" tabIndex={-1}><Outlet /></main>
-      <footer className="as-footer"><div className="as-container as-footer-inner">
-        <Link to="/astrascend" className="as-brand"><img className="as-wordmark" src={whiteWordmark} alt="ASTRA Developers" width="226" height="38" /></Link>
-        <p>An initiative of ASTRA Developers · AY 2026–2027</p>
-        <Link to="/astrascend#community">Community</Link>
+      <div className="pointer-events-none fixed bottom-[max(12px,env(safe-area-inset-bottom))] right-0 z-[15] overflow-hidden p-2 pr-[var(--as-toggle-inset)] [--as-toggle-inset:max(20px,env(safe-area-inset-right))]">
+        <button type="button" className={`inline-flex h-12 w-12 items-center justify-center rounded-full border border-ascend-line bg-ascend-input p-0 text-ascend-ink shadow-[0_4px_12px_#0b143733] hover:bg-ascend-selected hover:text-ascend-accent motion-reduce:transition-none [&_svg]:shrink-0 ${focus} ${atTop ? 'pointer-events-auto visible translate-x-0 [transition:transform_.24s_ease,visibility_0s]' : 'pointer-events-none invisible translate-x-[calc(100%_+_var(--as-toggle-inset)_+_8px)] [transition:transform_.24s_ease,visibility_0s_.24s]'}`}
+          role="switch" aria-label="Dark mode" aria-checked={theme === 'dark'} aria-hidden={!atTop}
+          tabIndex={atTop ? 0 : -1} title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          onClick={() => changeAppearance(theme === 'dark' ? 'light' : 'dark')}>
+          {theme === 'dark' ? <Moon size={20} strokeWidth={1.8} aria-hidden="true" /> : <Sun size={20} strokeWidth={1.8} aria-hidden="true" />}
+        </button>
+      </div>
+      <main className="scroll-mt-[calc(var(--as-header-height)_+_16px)] focus:outline-none" id="as-main" tabIndex={-1}><Outlet /></main>
+      <footer className="relative z-[2] border-t border-[#263a60] bg-[#0b1437] py-11 text-white as-dark:bg-[#070c1d] as-compact:py-10"><div className={`${container} flex flex-wrap items-center justify-between gap-6 lg:flex-nowrap`}>
+        <Link to="/astrascend" className={`${brand} [--as-mark-height:38px] as-compact:[--as-mark-height:34px]`}><BrandWordmark inverse /></Link>
+        <p className="text-[15px]">An initiative of ASTRA Developers · AY 2026–2027</p>
+        <Link className={focus} to="/astrascend#community">Community</Link>
       </div></footer>
     </div>
   </RequestStateProvider></ThemeContext.Provider>;

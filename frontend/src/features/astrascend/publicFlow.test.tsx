@@ -28,8 +28,8 @@ function fill(request: ServiceRequest) {
   fireEvent.click(screen.getByRole('checkbox'));
 }
 
-beforeEach(() => { localStorage.clear(); vi.spyOn(window, 'scrollTo').mockImplementation(() => {}); });
-afterEach(() => { cleanup(); vi.restoreAllMocks(); });
+beforeEach(() => { localStorage.clear(); vi.stubGlobal('scrollY', 0); vi.spyOn(window, 'scrollTo').mockImplementation(() => {}); });
+afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
 describe('public request flow', () => {
   it.each<Service>(['makeform', 'upshift', 'linkup', 'reign'])('submits the complete %s payload and opens a labeled receipt', async service => {
@@ -101,14 +101,57 @@ describe('public request flow', () => {
     expect(screen.queryByRole('link', { name: /Discord/ })).toBeNull();
     expect(screen.getByText('Invite link coming soon').getAttribute('aria-disabled')).toBe('true');
   });
+  it('hides the floating theme control away from the top and restores keyboard access on return', () => {
+    const removeListener = vi.spyOn(window, 'removeEventListener');
+    const view = open('/astrascend');
+    const toggle = screen.getByRole('switch', { name: 'Dark mode' });
+    expect(document.querySelector('header')?.contains(toggle)).toBe(false);
+    expect(toggle.tabIndex).toBe(0);
+    vi.stubGlobal('scrollY', 160);
+    fireEvent.scroll(window);
+    expect(screen.queryByRole('switch', { name: 'Dark mode' })).toBeNull();
+    expect(toggle.tabIndex).toBe(-1);
+    vi.stubGlobal('scrollY', 80);
+    fireEvent.scroll(window);
+    expect(screen.queryByRole('switch', { name: 'Dark mode' })).toBeNull();
+    vi.stubGlobal('scrollY', 12);
+    fireEvent.scroll(window);
+    expect(screen.getByRole('switch', { name: 'Dark mode' })).toBe(toggle);
+    expect(toggle.tabIndex).toBe(0);
+    view.unmount();
+    expect(removeListener).toHaveBeenCalledWith('scroll', expect.any(Function));
+  });
+  it('closes the hamburger navigation with Escape, outside interaction, and route selection', () => {
+    open('/astrascend');
+    const menu = screen.getByRole('button', { name: 'Open navigation' });
+    fireEvent.click(menu);
+    expect(screen.getByRole('button', { name: 'Close navigation' }).getAttribute('aria-expanded')).toBe('true');
+    fireEvent.keyDown(screen.getByRole('link', { name: 'Services' }), { key: 'Escape' });
+    expect(menu.getAttribute('aria-expanded')).toBe('false');
+    expect(document.activeElement).toBe(menu);
+    fireEvent.click(menu);
+    fireEvent.pointerDown(screen.getByRole('heading', { name: /Great ideas/ }));
+    expect(menu.getAttribute('aria-expanded')).toBe('false');
+    fireEvent.click(menu);
+    fireEvent.click(screen.getByRole('link', { name: 'Start a request' }));
+    expect(screen.getByRole('heading', { name: 'Tell us what you have in mind.' })).toBeDefined();
+    expect(menu.getAttribute('aria-expanded')).toBe('false');
+  });
   it('keeps appearance state scoped and persists only the theme choice', async () => {
     const original = document.documentElement.getAttribute('style');
     vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() })));
     open();
     expect(document.querySelector('.astrascend')?.getAttribute('data-theme')).toBe('dark');
-    fireEvent.change(screen.getByRole('combobox', { name: 'Appearance' }), { target: { value: 'light' } });
+    const toggle = screen.getByRole('switch', { name: 'Dark mode' });
+    expect(toggle.getAttribute('aria-checked')).toBe('true');
+    fireEvent.click(toggle);
     await waitFor(() => expect(document.querySelector('.astrascend')?.getAttribute('data-theme')).toBe('light'));
+    expect(toggle.getAttribute('aria-checked')).toBe('false');
     expect(localStorage.getItem('astrascend-theme')).toBe('light');
+    fireEvent.click(toggle);
+    await waitFor(() => expect(document.querySelector('.astrascend')?.getAttribute('data-theme')).toBe('dark'));
+    expect(toggle.getAttribute('aria-checked')).toBe('true');
+    expect(localStorage.getItem('astrascend-theme')).toBe('dark');
     expect(localStorage.length).toBe(1);
     expect(document.documentElement.getAttribute('style')).toBe(original);
     vi.unstubAllGlobals();

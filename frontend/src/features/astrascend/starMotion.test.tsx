@@ -36,15 +36,21 @@ describe('specified star motion', () => {
     let id = 0;
     vi.stubGlobal('requestAnimationFrame', vi.fn((callback: FrameRequestCallback) => { callbacks.set(++id, callback); return id; }));
     vi.stubGlobal('cancelAnimationFrame', vi.fn((key: number) => callbacks.delete(key)));
+    vi.stubGlobal('Image', class { complete = true; naturalWidth = 1440; onload = null; src = ''; });
     const disconnect = vi.fn();
     let intersect!: (entries: { isIntersecting: boolean }[]) => void;
     vi.stubGlobal('IntersectionObserver', class { constructor(callback: typeof intersect) { intersect = callback; } observe() {} disconnect = disconnect; });
     const context = { clearRect: vi.fn(), setTransform: vi.fn(), save: vi.fn(), restore: vi.fn(), beginPath: vi.fn(), rect: vi.fn(), clip: vi.fn(), drawImage: vi.fn(), globalAlpha: 1 };
     vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(context as unknown as CanvasRenderingContext2D);
-    const { unmount } = render(<div className="as-landing"><StarBackground /></div>);
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (this: HTMLElement) {
+      return this.hasAttribute('data-as-star-mask') ? new DOMRect(20, 30, 100, 40) : new DOMRect();
+    });
+    const { unmount } = render(<div data-as-landing><div data-as-star-mask>Protected copy</div><StarBackground /></div>);
     expect(document.querySelectorAll('canvas')).toHaveLength(1);
     const runFrame = () => { const [key, callback] = [...callbacks][0]; callbacks.delete(key); callback(1000); };
     runFrame();
+    expect(context.drawImage).toHaveBeenCalled();
+    expect(context.clearRect).toHaveBeenCalledWith(8, 18, 124, 64);
     expect(callbacks.size).toBe(reduced ? 0 : 1);
     intersect([{ isIntersecting: false }]); expect(callbacks.size).toBe(0);
     intersect([{ isIntersecting: true }]); expect(callbacks.size).toBe(1);

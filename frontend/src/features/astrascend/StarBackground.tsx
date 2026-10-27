@@ -2,14 +2,14 @@ import { useEffect, useRef } from 'react';
 import artwork from './assets/star-field.svg';
 import { createStars, starFrame } from './starMotion';
 
-const MASKS = '.as-hero-copy, .as-mascot, .as-audience strong, .as-audience span, .as-section-intro, .as-service-card, .as-steps li, .as-community-card, .as-partners > div, .as-faq-list, .as-section h2, .as-fine-print, .as-final-cta .as-container';
+const MASKS = '[data-as-star-mask]';
 
 /** One viewport canvas for the entire dark landing page, with original Figma sprites. */
 export function StarBackground() {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = ref.current;
-    const landing = canvas?.closest<HTMLElement>('.as-landing');
+    const landing = canvas?.closest<HTMLElement>('[data-as-landing]');
     const context = canvas?.getContext('2d');
     if (!canvas || !landing || !context) return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -90,5 +90,5 @@ export function StarBackground() {
       reduced.removeEventListener('change', updateMotion); mobile.removeEventListener('change', updateCount);
     };
   }, []);
-  return <canvas ref={ref} className="as-stars" aria-hidden="true" />;
+  return <canvas ref={ref} className="pointer-events-none fixed inset-0 z-[1] h-full w-full" aria-hidden="true" />;
 }

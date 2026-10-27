@@ -1,5 +1,6 @@
 import { useId } from 'react';
 import type { FieldDefinition } from './formModel';
+import { fieldError, input } from './styles';
 
 interface Props {
   field: FieldDefinition;
@@ -19,20 +20,20 @@ export function FieldInput({ field, value, onChange, error, disabled }: Props) {
     onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => onChange(event.target.value),
   };
   return (
-    <div className={`as-field${field.fullWidth ? ' as-field--full' : ''}`}>
-      <label htmlFor={id}>{field.label}{field.required && <span aria-hidden="true"> *</span>}</label>
+    <div className={`min-w-0${field.fullWidth ? ' col-span-full' : ''}`}>
+      <label className="mb-2 block text-[14px] font-semibold" htmlFor={id}>{field.label}{field.required && <span aria-hidden="true"> *</span>}</label>
       {field.kind === 'select' ? (
-        <select {...common}>
+        <select {...common} className={`${input} min-h-[50px] cursor-pointer pr-2`}>
           <option value="">{field.placeholder || 'Choose an option'}</option>
           {field.options?.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
         </select>
       ) : field.kind === 'textarea' ? (
-        <textarea {...common} placeholder={field.placeholder} rows={3} />
+        <textarea {...common} className={`${input} min-h-[74px] resize-y`} placeholder={field.placeholder} rows={3} />
       ) : (
-        <input {...common} type={field.kind || 'text'} placeholder={field.placeholder}
+        <input {...common} className={`${input} min-h-[50px]`} type={field.kind || 'text'} placeholder={field.placeholder}
           autoComplete={field.kind === 'email' ? 'email' : field.name === 'fullName' ? 'name' : undefined} />
       )}
-      {error && <p className="as-field-error" id={errorId}>{error}</p>}
+      {error && <p className={fieldError} id={errorId}>{error}</p>}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import glow from './assets/glow.svg';
 import { serviceCards } from './services';
 import { useAstrascendTheme } from './AstrascendLayout';
 import { StarBackground } from './StarBackground';
+import { badge, button, container, focus, heading, section, sectionCopy, sectionHeading } from './styles';
 
 const steps = [
   ['Browse and submit', 'Read the guidelines and send the form for your service.'],
@@ -22,48 +23,66 @@ const questions = [
   ['Does a delivered website include ongoing support?', 'Ongoing hosting, maintenance, and future changes are separate arrangements. The team will clarify handover responsibilities and any support agreement with you.'],
 ];
 
+const stepColors = [
+  'bg-[#d4e1ff] text-[#0b1437] as-dark:bg-[#14224a]',
+  'bg-[#b5ccff] text-[#0b1437] as-dark:bg-[#192e66]',
+  'bg-[#8db2ff] text-[#0b1437] as-dark:bg-[#1d3b86]',
+  'bg-[#5e91ff] text-[#0b1437] as-dark:bg-[#2250be]',
+  'bg-[#2563eb] text-white as-dark:bg-[#2471ff]',
+  'bg-[#2563eb] text-white as-dark:bg-[#3a86ff]',
+];
+const communityCard = 'flex min-h-[340px] flex-col items-start gap-3.5 rounded-[28px] p-7 sm:min-h-[360px] lg:p-10 as-compact:min-h-[324px] as-compact:p-9';
+const communityHeading = 'text-[28px] font-bold leading-[1.25] lg:text-[32px] as-compact:text-[29px]';
+const wave = 'pointer-events-none absolute left-[calc(50%_-_1100px)] top-[470px] h-[900px] w-[2200px] max-w-none as-compact:top-[calc(100%_-_252px)]';
+
 export function LandingPage() {
   const theme = useAstrascendTheme();
-  return <div className="as-landing">
+  return <div data-as-landing className="relative as-dark:[--as-muted:#d5e0fa]">
     {theme === 'dark' && <StarBackground />}
-    <section className="as-hero">
-      <img className="as-hero-glow as-hero-glow--start" src={glow} alt="" width="660" height="660" />
-      <img className="as-hero-glow as-hero-glow--end" src={glow} alt="" width="660" height="660" />
-      <img className="as-hero-wave as-wave-light" src={lightWave} alt="" />
-      <img className="as-hero-wave as-wave-dark" src={darkWave} alt="" />
-      <div className="as-container as-hero-inner">
-        <div className="as-hero-copy">
-          <span className="as-badge">AN ASTRA DEVELOPERS INITIATIVE · AY 2026–2027 · LAUNCHING NOV 3</span>
-          <h1>Great ideas.<br />New heights.<br />Let’s ascend.</h1>
-          <p>A campus full of possibilities. A community ready to build. Bring your ideas to ASTRA Developers and turn possibility into meaningful impact.</p>
-          <div className="as-actions"><Link className="as-button" to="/astrascend/request">Let’s build something ↗</Link><Link className="as-button as-button--white" to="#services">Explore our services ↓</Link></div>
+    <section className="relative overflow-hidden bg-[#2563eb] text-white as-dark:bg-[#070c1d]">
+      <img className="pointer-events-none absolute -left-60 -top-60 hidden max-w-none as-dark:block" src={glow} alt="" width="660" height="660" />
+      <img className="pointer-events-none absolute -bottom-60 -right-60 hidden max-w-none as-dark:block" src={glow} alt="" width="660" height="660" />
+      <img className={`${wave} as-dark:hidden`} src={lightWave} alt="" />
+      <img className={`${wave} hidden as-dark:block`} src={darkWave} alt="" />
+      <div className={`${container} relative grid grid-cols-1 items-center gap-10 py-16 md:grid-cols-[minmax(0,1fr)_minmax(0,.9fr)] md:gap-9 lg:grid-cols-[minmax(0,1fr)_500px] lg:gap-16 lg:py-[88px] as-compact:grid-cols-[minmax(0,1fr)_minmax(0,clamp(312px,45vh,364px))] as-compact:gap-9 as-compact:py-[clamp(43px,5.4vh,50px)]`}>
+        <div data-as-star-mask className="flex flex-col items-start gap-6 lg:gap-7 as-compact:gap-[18px]">
+          <span className={badge(true)}>AN ASTRA DEVELOPERS INITIATIVE · AY 2026–2027 · LAUNCHING NOV 3</span>
+          <h1 className={`${heading} text-[clamp(48px,11vw,72px)] md:text-[64px] lg:text-[clamp(56px,6.4vw,92px)] as-compact:text-[clamp(54px,min(4.5vw,8.1vh),61px)]`}>Great ideas.<br />New heights.<br />Let’s ascend.</h1>
+          <p className="max-w-[620px] text-[18px] font-medium lg:text-[20px] as-compact:text-[18px]">A campus full of possibilities. A community ready to build. Bring your ideas to ASTRA Developers and turn possibility into meaningful impact.</p>
+          <div className="flex flex-wrap gap-4"><Link className={button()} to="/astrascend/request">Let’s build something ↗</Link><Link className={button('white')} to="#services">Explore our services ↓</Link></div>
         </div>
-        <div className="as-mascot"><img src={mascot} alt="ASTRA's blue astronaut mascot reaching for new heights" /></div>
+        <div data-as-star-mask className="relative aspect-[500/520] w-full max-w-[500px] justify-self-center overflow-hidden rounded-[32px] as-dark:shadow-[0_0_24px_#1b63eb33,0_24px_48px_-12px_#0006] md:max-w-none md:justify-self-auto">
+          <img className="absolute -left-[193.8%] -top-[13.42%] h-[113.42%] w-[310.08%] max-w-none" src={mascot} alt="ASTRA's blue astronaut mascot reaching for new heights" />
+        </div>
       </div>
     </section>
-    <div className="as-audience"><div className="as-container"><strong>OPEN TO IDEAS FROM</strong><span>Students</span><span>Campus organizations</span><span>Community groups</span><span>Industry partners</span></div></div>
-    <section className="as-section" id="services" aria-labelledby="as-services-heading"><div className="as-container">
-      <div className="as-section-intro"><h2 id="as-services-heading">What we can do for you</h2><p>Four services, one request form. Pick the one closest to your need and we’ll route it to the right team.</p></div>
-      <div className="as-services-grid">{serviceCards.map(card => <article className="as-service-card" key={card.service}>
-        <div><h3>{card.name}</h3><p className="as-service-title">{card.title}</p><p className="as-muted">{card.description}</p></div>
-        <ul>{card.benefits.map(benefit => <li key={benefit}>{benefit}</li>)}</ul>
-        <Link className="as-button" to={`/astrascend/request?service=${card.service}`}>{card.action}</Link>
+    <div className="bg-ascend-selected py-7 as-dark:bg-[#0a1126] as-compact:py-[25px]"><div className={`${container} grid grid-cols-2 items-center justify-between gap-x-6 gap-y-4 text-[14px] font-semibold sm:flex sm:flex-wrap sm:text-[16px]`}>
+      <strong data-as-star-mask className="col-span-full text-[12px]">OPEN TO IDEAS FROM</strong><span data-as-star-mask>Students</span><span data-as-star-mask>Campus organizations</span><span data-as-star-mask>Community groups</span><span data-as-star-mask>Industry partners</span>
+    </div></div>
+    <section className={`${section} as-dark:bg-[#0d1530]`} id="services" aria-labelledby="as-services-heading"><div className={container}>
+      <div data-as-star-mask className="mb-10 as-compact:mb-[29px]"><h2 data-as-star-mask className={sectionHeading} id="as-services-heading">What we can do for you</h2><p className={sectionCopy}>Four services, one request form. Pick the one closest to your need and we’ll route it to the right team.</p></div>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 as-compact:gap-[22px]">{serviceCards.map(card => <article data-as-star-mask className="flex min-h-0 flex-col gap-6 rounded-[20px] border border-ascend-line bg-ascend-panel p-6 shadow-[0_8px_24px_-8px_#0b14370a] as-dark:border-[#ffffff0a] as-dark:bg-[#111d38] sm:min-h-[410px] sm:gap-5 lg:min-h-[455px] lg:px-4 as-wide:px-5 as-compact:min-h-[410px] as-compact:gap-[18px] as-compact:px-[18px] as-compact:py-[22px]" key={card.service}>
+        <div><h3 className="text-[26px] font-bold tracking-[-.02em] as-dark:text-[#5c97ff] as-wide:text-[30px] as-compact:text-[27px]">{card.name}</h3><p className="mt-1 text-[20px] font-medium as-compact:text-[18px]">{card.title}</p><p className="mt-2 text-[15px] text-ascend-muted">{card.description}</p></div>
+        <ul className="grid list-none gap-2 p-0 text-[17px] as-compact:text-[16px]">{card.benefits.map(benefit => <li key={benefit}>{benefit}</li>)}</ul>
+        <Link className={`${button('primary', 'service')} mt-auto`} to={`/astrascend/request?service=${card.service}`}>{card.action}</Link>
       </article>)}</div>
-      <p className="as-fine-print">A request starts a conversation, not a guaranteed commitment. Services depend on technical readiness, member availability, resources, and leadership approval.</p>
+      <p data-as-star-mask className="mt-8 text-[13px] text-ascend-muted">A request starts a conversation, not a guaranteed commitment. Services depend on technical readiness, member availability, resources, and leadership approval.</p>
     </div></section>
-    <section className="as-section as-section--tinted" id="how-it-works" aria-labelledby="as-process-heading"><div className="as-container">
-      <div className="as-section-intro"><h2 id="as-process-heading">From request to result</h2><p>Every request follows the same six steps. No fixed response time is promised, and not every request is accepted.</p></div>
-      <ol className="as-steps">{steps.map(([title, description], index) => <li key={title}><span aria-hidden="true">{index + 1}</span><h3>{title}</h3><p>{description}</p></li>)}</ol>
+    <section className={`${section} bg-ascend-tint as-dark:bg-[#070c1d]`} id="how-it-works" aria-labelledby="as-process-heading"><div className={container}>
+      <div data-as-star-mask className="mb-10 as-dark:mb-3 as-compact:mb-[29px]"><h2 data-as-star-mask className={sectionHeading} id="as-process-heading">From request to result</h2><p className={`${sectionCopy} as-dark:mt-3`}>Every request follows the same six steps. No fixed response time is promised, and not every request is accepted.</p></div>
+      <ol className="grid list-none grid-cols-1 gap-4 px-0 pb-0 pt-6 as-dark:pt-0 sm:grid-cols-3 sm:gap-3 lg:grid-cols-6 lg:pt-16 as-compact:pt-[58px]">{steps.map(([title, description], index) => <li data-as-star-mask className={`${stepColors[index]} min-h-0 rounded-[20px] px-4 py-6 as-dark:border as-dark:border-[#ffffff0a] as-dark:text-[#f1f4ff] sm:min-h-[260px] lg:min-h-[320px] as-wide:px-5 as-compact:min-h-[288px] as-compact:px-[18px] as-compact:py-[22px]`} key={title}>
+        <span className="text-[36px] font-bold leading-[1.125]" aria-hidden="true">{index + 1}</span><h3 className="my-3 text-[18px] font-semibold">{title}</h3><p className="text-[16px]">{description}</p>
+      </li>)}</ol>
     </div></section>
-    <section className="as-section" id="community" aria-labelledby="as-community-heading"><div className="as-container">
-      <h2 id="as-community-heading">Stay close to ASTRA</h2>
-      <div className="as-community-grid">
-        <article className="as-community-card as-community-card--blue"><h3>ASTRA Developers Discord</h3><p>Ask technical questions, find learning resources, and hear announcements. Verified ASTRA members also get the Technology Support Hub.</p><div className="as-community-status"><span className="as-button as-button--white" aria-disabled="true">Invite link coming soon</span><small>The community invite is not available yet.</small></div></article>
-        <article className="as-community-card"><h3>ASTRA Developers App</h3><p>Your digital member ID, partner perks, and rewards in one place. Coming soon, starting with membership and benefits.</p><span className="as-community-status">Coming soon</span></article>
+    <section className={`${section} as-dark:bg-[#111c40]`} id="community" aria-labelledby="as-community-heading"><div className={container}>
+      <h2 data-as-star-mask className={sectionHeading} id="as-community-heading">Stay close to ASTRA</h2>
+      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 as-compact:gap-[22px]">
+        <article data-as-star-mask className={`${communityCard} bg-[#2563eb] text-white as-dark:bg-[#0a1fc8]`}><h3 className={communityHeading}>ASTRA Developers Discord</h3><p className="text-[17px] text-white as-compact:text-[16px]">Ask technical questions, find learning resources, and hear announcements. Verified ASTRA members also get the Technology Support Hub.</p><div className="mt-auto pt-9 text-white"><span className={button('white')} aria-disabled="true">Invite link coming soon</span><small className="mt-2 block text-[14px]">The community invite is not available yet.</small></div></article>
+        <article data-as-star-mask className={`${communityCard} bg-ascend-tint as-dark:bg-[#18264f]`}><h3 className={communityHeading}>ASTRA Developers App</h3><p className="text-[17px] text-ascend-muted as-compact:text-[16px]">Your digital member ID, partner perks, and rewards in one place. Coming soon, starting with membership and benefits.</p><span className="mt-auto pt-9 text-ascend-accent">Coming soon</span></article>
       </div>
     </div></section>
-    <section className="as-section as-section--tinted" aria-labelledby="as-partners-heading"><div className="as-container"><h2 id="as-partners-heading">Our partners</h2><div className="as-partners" aria-label="Partner placeholders">{[1, 2, 3, 4, 5].map(number => <div key={number}>Partner {number}</div>)}</div></div></section>
-    <section className="as-section as-faq" aria-labelledby="as-faq-heading"><div className="as-container"><h2 id="as-faq-heading">Before you send a request</h2><div className="as-faq-list">{questions.map(([question, answer], index) => <details key={question} open={index === 0}><summary>{question}<span aria-hidden="true" /></summary><p>{answer}</p></details>)}</div></div></section>
-    <section className="as-final-cta"><div className="as-container"><h2>Have an idea? Start with one conversation.</h2><Link className="as-button as-button--white" to="/astrascend/request">Share your idea ↗</Link></div></section>
+    <section className={`${section} bg-ascend-tint as-dark:bg-[#070c1d]`} aria-labelledby="as-partners-heading"><div className={container}><h2 data-as-star-mask className={sectionHeading} id="as-partners-heading">Our partners</h2><div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-5 md:gap-6 as-compact:gap-[22px]" aria-label="Partner placeholders">{[1, 2, 3, 4, 5].map(number => <div data-as-star-mask className="rounded-2xl border border-ascend-line px-3 py-7 text-center text-[14px] text-ascend-muted as-compact:py-[25px]" key={number}>Partner {number}</div>)}</div></div></section>
+    <section className={`${section} as-dark:bg-[#0d1530]`} aria-labelledby="as-faq-heading"><div className={container}><h2 data-as-star-mask className={sectionHeading} id="as-faq-heading">Before you send a request</h2><div data-as-star-mask className="mt-10 md:mt-20 as-compact:mt-9">{questions.map(([question, answer], index) => <details className="group border-t border-ascend-line py-6 last:border-b as-compact:py-[22px]" key={question} open={index === 0}><summary className={`flex cursor-pointer list-none items-center justify-between gap-5 text-[22px] font-bold [&::-webkit-details-marker]:hidden as-compact:text-[20px] ${focus}`}>{question}<span className="after:text-[28px] after:font-normal after:text-ascend-muted after:content-['+'] group-open:after:content-['−']" aria-hidden="true" /></summary><p className="mt-3 max-w-[760px] text-[17px] text-ascend-muted as-compact:text-[16px]">{answer}</p></details>)}</div></div></section>
+    <section className="relative bg-[#2563eb] py-16 text-white as-dark:bg-[#2471ff] as-compact:py-[43px]"><div data-as-star-mask className={container}><h2 className={`${heading} mb-8 max-w-[980px] text-[clamp(40px,5vw,72px)] as-compact:mb-[22px] as-compact:text-[clamp(36px,3.6vw,43px)]`}>Have an idea? Start with one conversation.</h2><Link className={button('white')} to="/astrascend/request">Share your idea ↗</Link></div></section>
   </div>;
 }

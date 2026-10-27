@@ -31,3 +31,16 @@ Every submission requires requester name, email, type, and `consent: true`. Cont
 REIGN's competition-search payload contains only intent, skills, eligibility, and assistance. Sharing excludes team status. Team matching and participation support permit all REIGN fields. Hidden draft answers are retained in memory but excluded from the submitted payload.
 
 No request personal information is persisted in local storage. Only the ASTRAscend appearance preference may be stored there. Demo receipts are explicitly labeled and are not proof of registration or email delivery.
+
+## Styling
+
+ASTRAscend uses the existing Tailwind 3 setup. Components own their layout, typography, responsive rules, interaction states, and artwork positioning through utility classes. `styles.ts` holds complete, reusable class strings for common controls and layout elements; avoid constructing fragments that Tailwind cannot discover.
+
+The `ascend` color tokens and `font-astrascend` family are additive extensions in `tailwind.config.js`. `astrascend.css` contains only local Urbanist font declarations and scoped light/dark color variables. Keep the existing app's brand palette, default breakpoints, global theme, and Preflight unchanged.
+
+- `as-dark:` applies beneath `.astrascend[data-theme="dark"]`; it does not use or change the global dark-mode strategy.
+- `as-compact:` preserves the compact laptop layout at widths of 1024–1599px, and at wider widths when viewport height is 800px or less.
+- `as-tiny:`, `as-label:`, and `as-wide:` preserve the existing 359px, 480–1023px, and 1200px layout boundaries without replacing Tailwind's standard breakpoints.
+- `data-as-landing` identifies the canvas's containing page. `data-as-star-mask` marks the precise text/card areas that stars must avoid. These behavior hooks must survive styling changes; do not replace them with utility-class queries.
+
+Keep the current sticky-header offsets, floating toggle's scroll/keyboard behavior, reduced-motion support, and compact sizing when changing styles. The submission contract and service definitions are independent of styling.
