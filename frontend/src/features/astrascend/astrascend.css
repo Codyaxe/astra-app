@@ -1,17 +1,54 @@
-@font-face { font-family: 'ASTRAscend Urbanist'; src: url('./assets/urbanist-400.ttf') format('truetype'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'ASTRAscend Urbanist'; src: url('./assets/urbanist-500.ttf') format('truetype'); font-weight: 500; font-display: swap; }
-@font-face { font-family: 'ASTRAscend Urbanist'; src: url('./assets/urbanist-600.ttf') format('truetype'); font-weight: 600; font-display: swap; }
-@font-face { font-family: 'ASTRAscend Urbanist'; src: url('./assets/urbanist-700.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+@font-face {
+    font-family: 'ASTRAscend Urbanist';
+    src: url('./assets/urbanist-400.ttf') format('truetype');
+    font-weight: 400;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'ASTRAscend Urbanist';
+    src: url('./assets/urbanist-500.ttf') format('truetype');
+    font-weight: 500;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'ASTRAscend Urbanist';
+    src: url('./assets/urbanist-600.ttf') format('truetype');
+    font-weight: 600;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'ASTRAscend Urbanist';
+    src: url('./assets/urbanist-700.ttf') format('truetype');
+    font-weight: 700;
+    font-display: swap;
+}
 
 .astrascend {
-  --as-bg: #fff; --as-text: #0b1437; --as-muted: #4a5a8a;
-  --as-tint: #eef3ff; --as-input: #fff; --as-panel: #fff; --as-form-bg: #f8faff;
-  --as-border: #d5e0fa; --as-input-border: #9eafd2; --as-selected: #eff6ff;
-  --as-blue: #2563eb; --as-accent: #2563eb; --as-error: #b42318;
+    --as-bg: #fff;
+    --as-text: #0b1437;
+    --as-muted: #4a5a8a;
+    --as-tint: #eef3ff;
+    --as-input: #fff;
+    --as-panel: #fff;
+    --as-form-bg: #f8faff;
+    --as-border: #d5e0fa;
+    --as-input-border: #9eafd2;
+    --as-selected: #eff6ff;
+    --as-blue: #2563eb;
+    --as-accent: #2563eb;
+    --as-error: #b42318;
 }
 .astrascend[data-theme='dark'] {
-  --as-bg: #0b132b; --as-text: #fff; --as-muted: #a8b6cf;
-  --as-tint: #0d1832; --as-input: #0b152c; --as-panel: #0f1b36; --as-form-bg: #0b132b;
-  --as-border: #263a60; --as-input-border: #526488; --as-selected: #142952;
-  --as-accent: #82b1ff; --as-error: #ffb4ab;
+    --as-bg: #0b132b;
+    --as-text: #fff;
+    --as-muted: #a8b6cf;
+    --as-tint: #0d1832;
+    --as-input: #0b152c;
+    --as-panel: #0f1b36;
+    --as-form-bg: #0b132b;
+    --as-border: #263a60;
+    --as-input-border: #526488;
+    --as-selected: #142952;
+    --as-accent: #82b1ff;
+    --as-error: #ffb4ab;
 }

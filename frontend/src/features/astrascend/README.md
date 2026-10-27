@@ -22,12 +22,12 @@ The endpoint URL, database tables, access policy, and email service are still ba
 
 Each request has four top-level properties. Only `details` changes between services.
 
-| Property | JSON / TypeScript type | Meaning |
-| --- | --- | --- |
-| `service` | String / `Service` union | One of `makeform`, `upshift`, `linkup`, or `reign`; identifies which details to validate. |
-| `requester` | Object / `Requester` | The contact person's name, email, affiliation, and requester type. |
-| `consent` | Boolean / literal `true` | The requester agreed to assessment, coordination, and contact. It must be the Boolean `true`, not the string `"true"`. |
-| `details` | Object / matching service details interface | Only the active service's applicable answers. |
+| Property    | JSON / TypeScript type                      | Meaning                                                                                                                |
+| ----------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `service`   | String / `Service` union                    | One of `makeform`, `upshift`, `linkup`, or `reign`; identifies which details to validate.                              |
+| `requester` | Object / `Requester`                        | The contact person's name, email, affiliation, and requester type.                                                     |
+| `consent`   | Boolean / literal `true`                    | The requester agreed to assessment, coordination, and contact. It must be the Boolean `true`, not the string `"true"`. |
+| `details`   | Object / matching service details interface | Only the active service's applicable answers.                                                                          |
 
 The exact TypeScript interfaces and dropdown codes are in [types.ts](types.ts). Required-field and visibility rules are in [formModel.ts](formModel.ts) and the [service definitions](forms/).
 
@@ -50,93 +50,93 @@ Type references: [PostgreSQL character types](https://www.postgresql.org/docs/cu
 
 ### Shared fields
 
-| Field path | Required | Sent as | Suggested storage | Why |
-| --- | --- | --- | --- | --- |
-| `service` | Yes | String code | `TEXT` with allowed values | Routes the request to the correct service. |
-| `requester.fullName` | Yes | String | `TEXT` | Supports full names without assuming a fixed length or name format. |
-| `requester.email` | Yes | String | `TEXT` | Stores the contact address; validate its format separately. It does not need to be unique across requests. |
-| `requester.organization` | No | String | Nullable `TEXT` | Affiliation is free text and may be absent. |
-| `requester.type` | Yes | String code | `TEXT` with allowed values | Distinguishes students, members, organizations, and other requesters. |
-| `consent` | Yes | Boolean `true` | `BOOLEAN` | Represents an explicit yes/no value; accepted submissions require `true`. |
+| Field path               | Required | Sent as        | Suggested storage          | Why                                                                                                        |
+| ------------------------ | -------- | -------------- | -------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `service`                | Yes      | String code    | `TEXT` with allowed values | Routes the request to the correct service.                                                                 |
+| `requester.fullName`     | Yes      | String         | `TEXT`                     | Supports full names without assuming a fixed length or name format.                                        |
+| `requester.email`        | Yes      | String         | `TEXT`                     | Stores the contact address; validate its format separately. It does not need to be unique across requests. |
+| `requester.organization` | No       | String         | Nullable `TEXT`            | Affiliation is free text and may be absent.                                                                |
+| `requester.type`         | Yes      | String code    | `TEXT` with allowed values | Distinguishes students, members, organizations, and other requesters.                                      |
+| `consent`                | Yes      | Boolean `true` | `BOOLEAN`                  | Represents an explicit yes/no value; accepted submissions require `true`.                                  |
 
 ### MAKEFORM: project and technology support
 
 All paths in this table are inside `details`.
 
-| Field | Required | Sent as | Suggested storage | Why |
-| --- | --- | --- | --- | --- |
-| `serviceType` | Yes | String code | `TEXT` with allowed values | Identifies the requested technology service. |
-| `title` | Yes | String | `TEXT` | A readable project title. |
-| `supportNeeded` | Yes | String | `TEXT` | A free-text description of the requested support. |
-| `beneficiaries` | Yes | String | `TEXT` | Describes people and expected impact, not a numeric count. |
-| `preferredTimeline` | No | String | Nullable `TEXT` | May contain a date, range, or wording such as “flexible.” |
-| `resourcesBudget` | No | String | Nullable `TEXT` | May describe funds, equipment, existing content, or uncertainty; it is not a currency amount alone. |
-| `materialsOrLinks` | No | String | Nullable `TEXT` | May contain notes and multiple links rather than one validated URL. |
+| Field               | Required | Sent as     | Suggested storage          | Why                                                                                                 |
+| ------------------- | -------- | ----------- | -------------------------- | --------------------------------------------------------------------------------------------------- |
+| `serviceType`       | Yes      | String code | `TEXT` with allowed values | Identifies the requested technology service.                                                        |
+| `title`             | Yes      | String      | `TEXT`                     | A readable project title.                                                                           |
+| `supportNeeded`     | Yes      | String      | `TEXT`                     | A free-text description of the requested support.                                                   |
+| `beneficiaries`     | Yes      | String      | `TEXT`                     | Describes people and expected impact, not a numeric count.                                          |
+| `preferredTimeline` | No       | String      | Nullable `TEXT`            | May contain a date, range, or wording such as “flexible.”                                           |
+| `resourcesBudget`   | No       | String      | Nullable `TEXT`            | May describe funds, equipment, existing content, or uncertainty; it is not a currency amount alone. |
+| `materialsOrLinks`  | No       | String      | Nullable `TEXT`            | May contain notes and multiple links rather than one validated URL.                                 |
 
 ### UPSHIFT: learning support
 
-| Field in `details` | Required | Sent as | Suggested storage | Why |
-| --- | --- | --- | --- | --- |
-| `learningSupportType` | Yes | String code | `TEXT` with allowed values | Identifies the kind of learning support. |
-| `topic` | Yes | String | `TEXT` | A topic or skill description. |
-| `experienceLevel` | No | String code | Nullable `TEXT` with allowed values | Stores a selected experience category. |
-| `preferredFormat` | No | String code | Nullable `TEXT` with allowed values | Distinguishes online, in-person, and hybrid sessions. |
-| `goal` | Yes | String | `TEXT` | Describes the intended learning outcome. |
-| `participants` | No | String | Nullable `TEXT` | May be a group name or “a team of four students,” not just an integer. |
-| `preferredSchedule` | No | String | Nullable `TEXT` | Supports availability descriptions and flexible dates. |
+| Field in `details`    | Required | Sent as     | Suggested storage                   | Why                                                                    |
+| --------------------- | -------- | ----------- | ----------------------------------- | ---------------------------------------------------------------------- |
+| `learningSupportType` | Yes      | String code | `TEXT` with allowed values          | Identifies the kind of learning support.                               |
+| `topic`               | Yes      | String      | `TEXT`                              | A topic or skill description.                                          |
+| `experienceLevel`     | No       | String code | Nullable `TEXT` with allowed values | Stores a selected experience category.                                 |
+| `preferredFormat`     | No       | String code | Nullable `TEXT` with allowed values | Distinguishes online, in-person, and hybrid sessions.                  |
+| `goal`                | Yes      | String      | `TEXT`                              | Describes the intended learning outcome.                               |
+| `participants`        | No       | String      | Nullable `TEXT`                     | May be a group name or “a team of four students,” not just an integer. |
+| `preferredSchedule`   | No       | String      | Nullable `TEXT`                     | Supports availability descriptions and flexible dates.                 |
 
 ### LINKUP: partnerships
 
-| Field in `details` | Required | Sent as | Suggested storage | Why |
-| --- | --- | --- | --- | --- |
-| `partnershipType` | Yes | String code | `TEXT` with allowed values | Identifies the proposed collaboration category. |
-| `organizationName` | Yes | String | `TEXT` | Names the organization proposing the partnership. |
-| `organizationUrl` | No | URL string | Nullable `TEXT` | Stores a validated website or official-page link. |
-| `proposal` | Yes | String | `TEXT` | Contains the collaboration description. |
-| `contributions` | Yes | String | `TEXT` | May describe funding, expertise, venues, or other resources. |
-| `collaborationPeriod` | No | String | Nullable `TEXT` | Allows a date range or a period still to be agreed. |
-| `proposalLink` | No | URL string | Nullable `TEXT` | Stores a document link rather than a file upload. |
+| Field in `details`    | Required | Sent as     | Suggested storage          | Why                                                          |
+| --------------------- | -------- | ----------- | -------------------------- | ------------------------------------------------------------ |
+| `partnershipType`     | Yes      | String code | `TEXT` with allowed values | Identifies the proposed collaboration category.              |
+| `organizationName`    | Yes      | String      | `TEXT`                     | Names the organization proposing the partnership.            |
+| `organizationUrl`     | No       | URL string  | Nullable `TEXT`            | Stores a validated website or official-page link.            |
+| `proposal`            | Yes      | String      | `TEXT`                     | Contains the collaboration description.                      |
+| `contributions`       | Yes      | String      | `TEXT`                     | May describe funding, expertise, venues, or other resources. |
+| `collaborationPeriod` | No       | String      | Nullable `TEXT`            | Allows a date range or a period still to be agreed.          |
+| `proposalLink`        | No       | URL string  | Nullable `TEXT`            | Stores a document link rather than a file upload.            |
 
 Keep `requester.organization` separate from `details.organizationName`: one describes the contact person's affiliation, and the other identifies the proposing organization.
 
 ### REIGN: opportunities and participation
 
-| Field in `details` | Required | Sent as | Suggested storage | Why |
-| --- | --- | --- | --- | --- |
-| `intent` | Yes | String code | `TEXT` with allowed values | Identifies the main action and determines applicable fields. |
-| `opportunityName` | No | String | Nullable `TEXT` | A readable opportunity or competition name. |
-| `opportunityUrl` | No | URL string | Nullable `TEXT` | Stores a validated official announcement link. |
-| `skills` | No | String | Nullable `TEXT` | Describes skills or fields; the current form does not send a tag array. |
-| `eligibility` | No | String | Nullable `TEXT` | Describes who can participate. |
-| `assistanceNeeded` | No | String code | Nullable `TEXT` with allowed values | Describes the specific help requested, separately from the main action. |
-| `registrationDeadline` | No | `YYYY-MM-DD` string | Nullable `DATE` | Stores a calendar deadline without inventing a time or shifting it between time zones. |
-| `teamStatus` | No | String code | Nullable `TEXT` with allowed values | Describes the requester's current team situation. |
+| Field in `details`     | Required | Sent as             | Suggested storage                   | Why                                                                                    |
+| ---------------------- | -------- | ------------------- | ----------------------------------- | -------------------------------------------------------------------------------------- |
+| `intent`               | Yes      | String code         | `TEXT` with allowed values          | Identifies the main action and determines applicable fields.                           |
+| `opportunityName`      | No       | String              | Nullable `TEXT`                     | A readable opportunity or competition name.                                            |
+| `opportunityUrl`       | No       | URL string          | Nullable `TEXT`                     | Stores a validated official announcement link.                                         |
+| `skills`               | No       | String              | Nullable `TEXT`                     | Describes skills or fields; the current form does not send a tag array.                |
+| `eligibility`          | No       | String              | Nullable `TEXT`                     | Describes who can participate.                                                         |
+| `assistanceNeeded`     | No       | String code         | Nullable `TEXT` with allowed values | Describes the specific help requested, separately from the main action.                |
+| `registrationDeadline` | No       | `YYYY-MM-DD` string | Nullable `DATE`                     | Stores a calendar deadline without inventing a time or shifting it between time zones. |
+| `teamStatus`           | No       | String code         | Nullable `TEXT` with allowed values | Describes the requester's current team situation.                                      |
 
 Only `intent` is required within REIGN details. Other fields are optional **and** subject to these visibility rules:
 
-| `intent` | Applicable fields in `details` |
-| --- | --- |
-| No choice yet | Only the intent control is shown; submission fails until an action is selected. |
-| `find_competition` | `intent`, `skills`, `eligibility`, `assistanceNeeded` |
-| `share_opportunity` | All REIGN fields except `teamStatus` |
-| `find_teammates` | All REIGN fields |
-| `participation_support` | All REIGN fields |
+| `intent`                | Applicable fields in `details`                                                  |
+| ----------------------- | ------------------------------------------------------------------------------- |
+| No choice yet           | Only the intent control is shown; submission fails until an action is selected. |
+| `find_competition`      | `intent`, `skills`, `eligibility`, `assistanceNeeded`                           |
+| `share_opportunity`     | All REIGN fields except `teamStatus`                                            |
+| `find_teammates`        | All REIGN fields                                                                |
+| `participation_support` | All REIGN fields                                                                |
 
 ### Allowed dropdown codes
 
 Store these codes, such as `mobile_app`, rather than their display labels, such as “Mobile app.” TypeScript represents each choice field as a union of string literals; see [types.ts](types.ts).
 
-| Field path | Allowed codes |
-| --- | --- |
-| `requester.type` | `student`, `astra_member`, `campus_organization`, `college`, `community_group`, `external_partner`, `other` |
-| MAKEFORM `details.serviceType` | `website`, `mobile_app`, `ui_ux`, `ai_ml`, `cloud`, `other` |
-| UPSHIFT `details.learningSupportType` | `technical_consultation`, `mentorship`, `workshop`, `career_talk`, `thesis`, `other` |
-| UPSHIFT `details.experienceLevel` | `beginner`, `intermediate`, `advanced`, `not_sure` |
-| UPSHIFT `details.preferredFormat` | `online`, `in_person`, `hybrid` |
-| LINKUP `details.partnershipType` | `event`, `sponsorship`, `technical_collaboration`, `organization_partnership`, `resource_sharing`, `app_perks`, `other` |
-| REIGN `details.intent` | `share_opportunity`, `find_competition`, `find_teammates`, `participation_support` |
-| REIGN `details.assistanceNeeded` | `share`, `find_teammates`, `guidance`, `team_coordination`, `other` |
-| REIGN `details.teamStatus` | `individual`, `team_formed`, `need_teammates`, `not_applicable` |
+| Field path                            | Allowed codes                                                                                                           |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `requester.type`                      | `student`, `astra_member`, `campus_organization`, `college`, `community_group`, `external_partner`, `other`             |
+| MAKEFORM `details.serviceType`        | `website`, `mobile_app`, `ui_ux`, `ai_ml`, `cloud`, `other`                                                             |
+| UPSHIFT `details.learningSupportType` | `technical_consultation`, `mentorship`, `workshop`, `career_talk`, `thesis`, `other`                                    |
+| UPSHIFT `details.experienceLevel`     | `beginner`, `intermediate`, `advanced`, `not_sure`                                                                      |
+| UPSHIFT `details.preferredFormat`     | `online`, `in_person`, `hybrid`                                                                                         |
+| LINKUP `details.partnershipType`      | `event`, `sponsorship`, `technical_collaboration`, `organization_partnership`, `resource_sharing`, `app_perks`, `other` |
+| REIGN `details.intent`                | `share_opportunity`, `find_competition`, `find_teammates`, `participation_support`                                      |
+| REIGN `details.assistanceNeeded`      | `share`, `find_teammates`, `guidance`, `team_coordination`, `other`                                                     |
+| REIGN `details.teamStatus`            | `individual`, `team_formed`, `need_teammates`, `not_applicable`                                                         |
 
 ## Copyable request examples
 
@@ -146,23 +146,23 @@ These are complete form-facing objects, not an agreed HTTP endpoint or database 
 
 ```json
 {
-  "service": "makeform",
-  "requester": {
-    "fullName": "Alex Reyes",
-    "email": "alex@example.com",
-    "type": "campus_organization",
-    "organization": "Campus Innovation Club"
-  },
-  "consent": true,
-  "details": {
-    "serviceType": "website",
-    "title": "Website for our organization",
-    "supportNeeded": "A website with information about our organization and upcoming activities.",
-    "beneficiaries": "Students looking for campus activities and registration information.",
-    "preferredTimeline": "November 2026; flexible",
-    "resourcesBudget": "Logo and content available; hosting costs to discuss.",
-    "materialsOrLinks": "https://example.com/project-brief"
-  }
+    "service": "makeform",
+    "requester": {
+        "fullName": "Alex Reyes",
+        "email": "alex@example.com",
+        "type": "campus_organization",
+        "organization": "Campus Innovation Club"
+    },
+    "consent": true,
+    "details": {
+        "serviceType": "website",
+        "title": "Website for our organization",
+        "supportNeeded": "A website with information about our organization and upcoming activities.",
+        "beneficiaries": "Students looking for campus activities and registration information.",
+        "preferredTimeline": "November 2026; flexible",
+        "resourcesBudget": "Logo and content available; hosting costs to discuss.",
+        "materialsOrLinks": "https://example.com/project-brief"
+    }
 }
 ```
 
@@ -170,23 +170,23 @@ These are complete form-facing objects, not an agreed HTTP endpoint or database 
 
 ```json
 {
-  "service": "upshift",
-  "requester": {
-    "fullName": "Bea Santos",
-    "email": "bea@example.com",
-    "type": "astra_member",
-    "organization": "ASTRA Developers"
-  },
-  "consent": true,
-  "details": {
-    "learningSupportType": "mentorship",
-    "topic": "React and API integration",
-    "experienceLevel": "beginner",
-    "preferredFormat": "online",
-    "goal": "Learn to structure our first React project and handle API responses.",
-    "participants": "A team of four students",
-    "preferredSchedule": "A weekend in November"
-  }
+    "service": "upshift",
+    "requester": {
+        "fullName": "Bea Santos",
+        "email": "bea@example.com",
+        "type": "astra_member",
+        "organization": "ASTRA Developers"
+    },
+    "consent": true,
+    "details": {
+        "learningSupportType": "mentorship",
+        "topic": "React and API integration",
+        "experienceLevel": "beginner",
+        "preferredFormat": "online",
+        "goal": "Learn to structure our first React project and handle API responses.",
+        "participants": "A team of four students",
+        "preferredSchedule": "A weekend in November"
+    }
 }
 ```
 
@@ -194,23 +194,23 @@ These are complete form-facing objects, not an agreed HTTP endpoint or database 
 
 ```json
 {
-  "service": "linkup",
-  "requester": {
-    "fullName": "Carlo Lim",
-    "email": "carlo@example.com",
-    "type": "external_partner",
-    "organization": "Community Learning Network"
-  },
-  "consent": true,
-  "details": {
-    "partnershipType": "event",
-    "organizationName": "Community Learning Network",
-    "organizationUrl": "https://example.com/community",
-    "proposal": "A joint introductory web development workshop for student organizations.",
-    "contributions": "Venue, publicity, registration support and volunteers.",
-    "collaborationPeriod": "December 2026; date to agree",
-    "proposalLink": "https://example.com/workshop-proposal"
-  }
+    "service": "linkup",
+    "requester": {
+        "fullName": "Carlo Lim",
+        "email": "carlo@example.com",
+        "type": "external_partner",
+        "organization": "Community Learning Network"
+    },
+    "consent": true,
+    "details": {
+        "partnershipType": "event",
+        "organizationName": "Community Learning Network",
+        "organizationUrl": "https://example.com/community",
+        "proposal": "A joint introductory web development workshop for student organizations.",
+        "contributions": "Venue, publicity, registration support and volunteers.",
+        "collaborationPeriod": "December 2026; date to agree",
+        "proposalLink": "https://example.com/workshop-proposal"
+    }
 }
 ```
 
@@ -220,23 +220,23 @@ This example omits optional `requester.organization`.
 
 ```json
 {
-  "service": "reign",
-  "requester": {
-    "fullName": "Dani Cruz",
-    "email": "dani@example.com",
-    "type": "astra_member"
-  },
-  "consent": true,
-  "details": {
-    "intent": "find_teammates",
-    "opportunityName": "Campus Innovation Challenge",
-    "opportunityUrl": "https://example.com/challenge",
-    "skills": "Frontend development and UI design",
-    "eligibility": "Students",
-    "assistanceNeeded": "find_teammates",
-    "registrationDeadline": "2027-01-10",
-    "teamStatus": "need_teammates"
-  }
+    "service": "reign",
+    "requester": {
+        "fullName": "Dani Cruz",
+        "email": "dani@example.com",
+        "type": "astra_member"
+    },
+    "consent": true,
+    "details": {
+        "intent": "find_teammates",
+        "opportunityName": "Campus Innovation Challenge",
+        "opportunityUrl": "https://example.com/challenge",
+        "skills": "Frontend development and UI design",
+        "eligibility": "Students",
+        "assistanceNeeded": "find_teammates",
+        "registrationDeadline": "2027-01-10",
+        "teamStatus": "need_teammates"
+    }
 }
 ```
 
@@ -248,10 +248,10 @@ Find a competition: opportunity details, deadline, and team status are not appli
 
 ```json
 {
-  "intent": "find_competition",
-  "skills": "Web development",
-  "eligibility": "Undergraduate students",
-  "assistanceNeeded": "guidance"
+    "intent": "find_competition",
+    "skills": "Web development",
+    "eligibility": "Undergraduate students",
+    "assistanceNeeded": "guidance"
 }
 ```
 
@@ -259,13 +259,13 @@ Share an opportunity: team status is excluded.
 
 ```json
 {
-  "intent": "share_opportunity",
-  "opportunityName": "Student Innovation Challenge",
-  "opportunityUrl": "https://example.com/challenge",
-  "skills": "Programming and design",
-  "eligibility": "College students",
-  "assistanceNeeded": "share",
-  "registrationDeadline": "2027-01-10"
+    "intent": "share_opportunity",
+    "opportunityName": "Student Innovation Challenge",
+    "opportunityUrl": "https://example.com/challenge",
+    "skills": "Programming and design",
+    "eligibility": "College students",
+    "assistanceNeeded": "share",
+    "registrationDeadline": "2027-01-10"
 }
 ```
 
@@ -273,14 +273,14 @@ Request participation support: all REIGN fields are applicable.
 
 ```json
 {
-  "intent": "participation_support",
-  "opportunityName": "Student Innovation Challenge",
-  "opportunityUrl": "https://example.com/challenge",
-  "skills": "Frontend development",
-  "eligibility": "College students",
-  "assistanceNeeded": "team_coordination",
-  "registrationDeadline": "2027-01-10",
-  "teamStatus": "team_formed"
+    "intent": "participation_support",
+    "opportunityName": "Student Innovation Challenge",
+    "opportunityUrl": "https://example.com/challenge",
+    "skills": "Frontend development",
+    "eligibility": "College students",
+    "assistanceNeeded": "team_coordination",
+    "registrationDeadline": "2027-01-10",
+    "teamStatus": "team_formed"
 }
 ```
 
@@ -292,10 +292,10 @@ The integration function returns the following `SubmissionReceipt` shape. This i
 
 ```json
 {
-  "mode": "demo",
-  "referenceNumber": "DEMO-1234ABCD",
-  "submittedAt": "2026-10-28T06:30:00.000Z",
-  "confirmationEmailSent": false
+    "mode": "demo",
+    "referenceNumber": "DEMO-1234ABCD",
+    "submittedAt": "2026-10-28T06:30:00.000Z",
+    "confirmationEmailSent": false
 }
 ```
 
@@ -303,21 +303,21 @@ The integration function returns the following `SubmissionReceipt` shape. This i
 
 ```json
 {
-  "mode": "live",
-  "referenceNumber": "ASC-000123",
-  "submittedAt": "2026-10-28T06:30:00.000Z",
-  "confirmationEmailSent": false
+    "mode": "live",
+    "referenceNumber": "ASC-000123",
+    "submittedAt": "2026-10-28T06:30:00.000Z",
+    "confirmationEmailSent": false
 }
 ```
 
 The live reference format above is illustrative; the backend chooses and generates the actual unique reference. The backend also supplies the authoritative submission time. Neither value is part of the form's input.
 
-| Receipt field | JSON / TypeScript type | Suggested storage, if persisted | Why |
-| --- | --- | --- | --- |
-| `mode` | String union: `demo` or `live` | Usually integration configuration, not a request column | Identifies whether a real save occurred. Return `live` only after success. |
-| `referenceNumber` | String | Unique, non-null `TEXT` | References may contain letters, prefixes, and leading zeros. |
-| `submittedAt` | ISO 8601 string | Non-null `TIMESTAMPTZ` | Records a precise instant; return a timestamp with an explicit UTC offset, such as `Z`. |
-| `confirmationEmailSent` | Boolean | `BOOLEAN`, if tracked | Reports actual sending confirmation. Leave `false` if email is disabled, only queued, or unconfirmed. |
+| Receipt field           | JSON / TypeScript type         | Suggested storage, if persisted                         | Why                                                                                                   |
+| ----------------------- | ------------------------------ | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `mode`                  | String union: `demo` or `live` | Usually integration configuration, not a request column | Identifies whether a real save occurred. Return `live` only after success.                            |
+| `referenceNumber`       | String                         | Unique, non-null `TEXT`                                 | References may contain letters, prefixes, and leading zeros.                                          |
+| `submittedAt`           | ISO 8601 string                | Non-null `TIMESTAMPTZ`                                  | Records a precise instant; return a timestamp with an explicit UTC offset, such as `Z`.               |
+| `confirmationEmailSent` | Boolean                        | `BOOLEAN`, if tracked                                   | Reports actual sending confirmation. Leave `false` if email is disabled, only queued, or unconfirmed. |
 
 Demo receipts do not prove registration or email delivery. Do not save demo requests as live submissions.
 
@@ -329,19 +329,22 @@ Map failures to the existing `SubmissionError` inside the integration module. Fi
 
 ```ts
 throw new SubmissionError(
-  'Please check the highlighted fields.',
-  'validation',
-  {
-    'requester.email': 'Enter a valid email address.',
-    'details.title': 'Enter a project title.',
-  },
+    'Please check the highlighted fields.',
+    'validation',
+    {
+        'requester.email': 'Enter a valid email address.',
+        'details.title': 'Enter a project title.',
+    },
 );
 ```
 
 Use `details.title` only for MAKEFORM; map each error to an applicable field. `fieldErrors` is a `Record<string, string>`: each key is a field path and each value is its user-facing message.
 
 ```ts
-throw new SubmissionError('Your request could not be submitted. Please retry.', 'network');
+throw new SubmissionError(
+    'Your request could not be submitted. Please retry.',
+    'network',
+);
 ```
 
 The supported error kinds are `validation`, `network`, and `unknown`. Unexpected failures are normalized to a generic retry message. These examples describe the UI-facing error contract, not an agreed HTTP error-response format.
