@@ -17,7 +17,9 @@ describe('shared request controls', () => {
     expect(document.getElementById(email.getAttribute('aria-describedby')!)?.textContent).toBe('Check this email.');
     fireEvent.change(email, { target: { value: 'alex@example.com' } });
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ email: 'alex@example.com' }));
-    expect(screen.getAllByRole('option')).toHaveLength(8);
+    fireEvent.click(screen.getByRole('combobox', { name: 'I am a…' }));
+    expect(screen.getAllByRole('option')).toHaveLength(7);
+    expect(screen.queryByRole('option', { name: 'Choose an option' })).toBeNull();
   });
 
   it('requires an explicit consent action and retains the full acknowledgement', () => {

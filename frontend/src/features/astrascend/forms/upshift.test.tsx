@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { ServiceFields } from '../ServiceFields';
 import { createEmptyDrafts } from '../RequestState';
 import { requestExamples } from '../requestExamples';
@@ -11,7 +11,9 @@ describe('UPSHIFT', () => {
     render(<ServiceFields definition={upshift} draft={createEmptyDrafts().upshift} onChange={vi.fn()} />);
     expect(screen.getAllByRole('combobox')).toHaveLength(3);
     expect(screen.getAllByRole('textbox')).toHaveLength(4);
+    fireEvent.click(screen.getByRole('combobox', { name: 'What type of learning support are you looking for?' }));
     expect(screen.getByRole('option', { name: 'Technical consultation' })).toBeDefined();
+    fireEvent.click(screen.getByRole('combobox', { name: 'Your current experience' }));
     expect(screen.getByRole('option', { name: 'Not sure yet' })).toBeDefined();
     expect(screen.getByText(/non-members may be referred/)).toBeDefined();
   });

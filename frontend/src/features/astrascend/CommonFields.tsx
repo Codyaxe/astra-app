@@ -10,7 +10,7 @@ const contactFields: readonly (FieldDefinition & { name: keyof ContactDraft })[]
   { name: 'fullName', label: 'Full name', required: true, placeholder: 'Your full name' },
   { name: 'email', label: 'Email address', kind: 'email', required: true, placeholder: 'you@example.com' },
   { name: 'organization', label: 'Organization / college', placeholder: 'If applicable' },
-  { name: 'type', label: 'I am a…', kind: 'select', options: requesterOptions },
+  { name: 'type', label: 'I am a…', kind: 'select', required: true, options: requesterOptions },
 ];
 
 export function ContactFields({ value, onChange, errors = {}, disabled }: {

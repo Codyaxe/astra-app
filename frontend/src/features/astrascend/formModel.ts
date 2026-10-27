@@ -1,5 +1,6 @@
 import { SubmissionError } from './requestIntegration';
 import type { DetailsByService, DetailsDraft, FieldErrors, Requester, RequesterType, Service, ServiceRequest } from './types';
+import { emailError, isValidDate } from './fieldValidation';
 
 export interface Option { value: string; label: string }
 export interface FieldDefinition {
@@ -26,7 +27,8 @@ export const requesterOptions: readonly Option[] = [
 export function validateContact(contact: ContactDraft, consent: boolean): FieldErrors {
   const errors: FieldErrors = {};
   if (!contact.fullName.trim()) errors['requester.fullName'] = 'Enter your full name.';
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email.trim())) errors['requester.email'] = 'Enter a valid email address.';
+  const invalidEmail = emailError(contact.email);
+  if (invalidEmail) errors['requester.email'] = invalidEmail;
   if (!requesterOptions.some(option => option.value === contact.type)) errors['requester.type'] = 'Choose how you are connected to this request.';
   if (!consent) errors.consent = 'Confirm the statement before submitting.';
   return errors;
@@ -73,8 +75,7 @@ export function defineService<S extends Service>(
         } catch { errors[key] = 'Enter a complete http:// or https:// link.'; }
       }
       if (field.kind === 'date') {
-        const date = new Date(`${value}T00:00:00Z`);
-        if (!/^\d{4}-\d{2}-\d{2}$/.test(value) || Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== value) {
+        if (!isValidDate(value)) {
           errors[key] = 'Enter a valid calendar date.';
         }
       }

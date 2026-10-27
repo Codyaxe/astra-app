@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { ServiceFields } from '../ServiceFields';
 import { createEmptyDrafts } from '../RequestState';
 import { requestExamples } from '../requestExamples';
@@ -10,8 +10,8 @@ describe('MAKEFORM', () => {
   it('renders the seven designed fields and the exact service options', () => {
     render(<ServiceFields definition={makeform} draft={createEmptyDrafts().makeform} onChange={vi.fn()} />);
     expect(screen.getAllByRole('textbox')).toHaveLength(6);
-    const select = screen.getByRole('combobox', { name: 'Service type' }) as HTMLSelectElement;
-    expect([...select.options].slice(1).map(option => option.text)).toEqual(['Website', 'Mobile app', 'UI/UX', 'AI/ML', 'Cloud', 'Other']);
+    fireEvent.click(screen.getByRole('combobox', { name: 'Service type' }));
+    expect(screen.getAllByRole('option').map(option => option.textContent)).toEqual(['Website', 'Mobile app', 'UI/UX', 'AI/ML', 'Cloud', 'Other']);
     expect(screen.queryByRole('option', { name: /consultation/i })).toBeNull();
   });
   it('requires only the four starred detail fields', () => {
