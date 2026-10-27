@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Menu, Moon, Sun, X } from 'lucide-react';
-import { RequestStateProvider } from './RequestState';
-import logo from './assets/logo-blue.png';
-import whiteLogo from './assets/logo-white.png';
+import { RequestStateProvider } from '../forms/RequestState';
+import logo from '../assets/logo-blue.png';
+import whiteLogo from '../assets/logo-white.png';
 import { DiscordIcon, DiscordLink } from './DiscordLink';
-import { brand, button, container, focus } from './styles';
-import './astrascend.css';
+import { brand, button, container, focus } from '../styles/styles';
+import '../styles/astrascend.css';
 
 type Appearance = 'system' | 'light' | 'dark';
 const THEME_KEY = 'astrascend-theme';

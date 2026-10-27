@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { FieldInput } from '../FieldInput';
-import type { FieldDefinition } from '../formModel';
-import { emailError, isValidDate } from '../fieldValidation';
-import { calendarDays, dateKey, parseDate, shiftMonth } from '../calendarDates';
-import { placeFieldPopover } from '../useFieldPopover';
+import { FieldInput } from '../forms/controls/FieldInput';
+import type { FieldDefinition } from '../forms/formModel';
+import { emailError, isValidDate } from '../forms/fieldValidation';
+import { calendarDays, dateKey, parseDate, shiftMonth } from '../forms/calendarDates';
+import { placeFieldPopover } from '../forms/controls/useFieldPopover';
 
 afterEach(() => {
     cleanup();

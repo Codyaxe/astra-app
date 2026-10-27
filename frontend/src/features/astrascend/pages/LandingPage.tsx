@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
-import mascot from './assets/mascot.png';
-import lightWave from './assets/wave-light.svg';
-import darkWave from './assets/wave-dark.svg';
-import glow from './assets/glow.svg';
-import logo from './assets/logo-blue.png';
-import whiteLogo from './assets/logo-white.png';
-import { DiscordIcon, DiscordLink } from './DiscordLink';
-import { serviceCards } from './services';
-import { useAstrascendTheme } from './AstrascendLayout';
-import { StarBackground } from './StarBackground';
+import mascot from '../assets/mascot.png';
+import lightWave from '../assets/wave-light.svg';
+import darkWave from '../assets/wave-dark.svg';
+import glow from '../assets/glow.svg';
+import logo from '../assets/logo-blue.png';
+import whiteLogo from '../assets/logo-white.png';
+import { DiscordIcon, DiscordLink } from '../components/DiscordLink';
+import { serviceCards } from '../forms/services';
+import { useAstrascendTheme } from '../components/AstrascendLayout';
+import { StarBackground } from '../background/StarBackground';
 import {
     badge,
     button,
@@ -18,7 +18,7 @@ import {
     section,
     sectionCopy,
     sectionHeading,
-} from './styles';
+} from '../styles/styles';
 
 const steps = [
     [

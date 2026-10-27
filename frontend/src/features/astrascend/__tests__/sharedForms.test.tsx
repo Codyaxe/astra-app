@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { ContactFields, ConsentField } from '../CommonFields';
-import { RequestStateProvider, useRequestState } from '../RequestState';
-import { SubmissionReceiptView } from '../SubmissionReceiptView';
-import { validateContact } from '../formModel';
+import { ContactFields, ConsentField } from '../forms/controls/CommonFields';
+import { RequestStateProvider, useRequestState } from '../forms/RequestState';
+import { SubmissionReceiptView } from '../components/SubmissionReceiptView';
+import { validateContact } from '../forms/formModel';
 
 afterEach(cleanup);
 

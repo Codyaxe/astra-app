@@ -13,9 +13,9 @@ import { CheckIn } from './pages/CheckIn.js';
 import { Marketplace } from './pages/Marketplace.js';
 import { VoucherDetails } from './pages/VoucherDetails.js';
 import { PartnerInstructions } from './pages/PartnerInstructions.js';
-import { AstrascendLayout } from './features/astrascend/AstrascendLayout.js';
-import { LandingPage } from './features/astrascend/LandingPage.js';
-import { RequestPage, SuccessPage, LegacyServiceRedirect } from './features/astrascend/RequestPage.js';
+import { AstrascendLayout } from './features/astrascend/components/AstrascendLayout.js';
+import { LandingPage } from './features/astrascend/pages/LandingPage.js';
+import { RequestPage, SuccessPage, LegacyServiceRedirect } from './features/astrascend/pages/RequestPage.js';
 import { Opportunities } from './pages/Opportunities.js';
 
 export const App: React.FC = () => {

@@ -1,7 +1,7 @@
-import { FieldInput } from './FieldInput';
+import { FieldInput } from './controls/FieldInput';
 import type { ServiceDefinition } from './formModel';
 import type { DetailsDraft, FieldErrors, Service } from './types';
-import { guidance } from './styles';
+import { guidance } from '../styles/styles';
 
 export function ServiceFields<S extends Service>({
     definition,

@@ -1,9 +1,9 @@
 import { useId, useState } from 'react';
-import type { FieldDefinition } from './formModel';
-import { fieldError, input } from './styles';
+import type { FieldDefinition } from '../formModel';
+import { fieldError, input } from '../../styles/styles';
 import { SelectField } from './SelectField';
 import { DatePicker } from './DatePicker';
-import { emailError, isValidDate } from './fieldValidation';
+import { emailError, isValidDate } from '../fieldValidation';
 
 interface Props {
     field: FieldDefinition;

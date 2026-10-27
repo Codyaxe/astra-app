@@ -8,18 +8,18 @@ import {
     waitFor,
 } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { AstrascendLayout } from '../AstrascendLayout';
-import { LandingPage } from '../LandingPage';
+import { AstrascendLayout } from '../components/AstrascendLayout';
+import { LandingPage } from '../pages/LandingPage';
 import {
     LegacyServiceRedirect,
     RequestPage,
     SuccessPage,
-} from '../RequestPage';
-import * as integration from '../requestIntegration';
-import { requestExamples } from '../requestExamples';
-import type { Service, ServiceRequest, SubmissionReceipt } from '../types';
-import { definitions } from '../services';
-import { requesterOptions } from '../formModel';
+} from '../pages/RequestPage';
+import * as integration from '../submission/requestIntegration';
+import { requestExamples } from '../submission/requestExamples';
+import type { Service, ServiceRequest, SubmissionReceipt } from '../forms/types';
+import { definitions } from '../forms/services';
+import { requesterOptions } from '../forms/formModel';
 
 const receipt: SubmissionReceipt = {
     mode: 'demo',

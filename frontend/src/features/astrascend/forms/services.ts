@@ -1,7 +1,7 @@
-import { makeform } from './forms/makeform';
-import { upshift } from './forms/upshift';
-import { linkup } from './forms/linkup';
-import { reign } from './forms/reign';
+import { makeform } from './serviceFields/makeform';
+import { upshift } from './serviceFields/upshift';
+import { linkup } from './serviceFields/linkup';
+import { reign } from './serviceFields/reign';
 
 export const definitions = { makeform, upshift, linkup, reign };
 export const serviceCards = [

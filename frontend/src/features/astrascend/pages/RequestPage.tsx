@@ -5,21 +5,21 @@ import {
     useParams,
     useSearchParams,
 } from 'react-router-dom';
-import { ContactFields, ConsentField } from './CommonFields';
-import { ServiceFields } from './ServiceFields';
-import { SubmissionReceiptView } from './SubmissionReceiptView';
-import { useRequestState } from './RequestState';
+import { ContactFields, ConsentField } from '../forms/controls/CommonFields';
+import { ServiceFields } from '../forms/ServiceFields';
+import { SubmissionReceiptView } from '../components/SubmissionReceiptView';
+import { useRequestState } from '../forms/RequestState';
 import {
     normalizeSubmissionError,
     submitServiceRequest,
-} from './requestIntegration';
-import { definitions, serviceCards } from './services';
+} from '../submission/requestIntegration';
+import { definitions, serviceCards } from '../forms/services';
 import {
     isService,
     type FieldErrors,
     type Service,
     type ServiceRequest,
-} from './types';
+} from '../forms/types';
 import {
     badge,
     button,
@@ -29,7 +29,7 @@ import {
     formSection,
     heading,
     panel,
-} from './styles';
+} from '../styles/styles';
 
 export function RequestPage() {
     const state = useRequestState();

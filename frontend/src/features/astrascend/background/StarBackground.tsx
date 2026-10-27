@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import artwork from './assets/star-field.svg';
+import artwork from '../assets/star-field.svg';
 import { createStars, starFrame } from './starMotion';
 import { measureStarMasks, starMaskOpacity, type StarMask } from './starMasks';
 

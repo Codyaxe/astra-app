@@ -3,7 +3,7 @@ import {
     type FieldErrors,
     type ServiceRequest,
     type SubmissionReceipt,
-} from './types';
+} from '../forms/types';
 
 export class SubmissionError extends Error {
     constructor(

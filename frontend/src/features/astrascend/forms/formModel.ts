@@ -1,4 +1,4 @@
-import { SubmissionError } from './requestIntegration';
+import { SubmissionError } from '../submission/requestIntegration';
 import type {
     DetailsByService,
     DetailsDraft,

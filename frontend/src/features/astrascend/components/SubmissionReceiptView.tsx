@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import type { SubmissionReceipt } from './types';
-import { badge, button, container, heading, panel } from './styles';
+import type { SubmissionReceipt } from '../forms/types';
+import { badge, button, container, heading, panel } from '../styles/styles';
 
 export function SubmissionReceiptView({
     receipt,

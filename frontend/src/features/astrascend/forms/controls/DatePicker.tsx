@@ -13,8 +13,8 @@ import {
   shiftDays,
   shiftMonth,
   startOfMonth,
-} from './calendarDates';
-import { focus, input } from './styles';
+} from '../calendarDates';
+import { focus, input } from '../../styles/styles';
 import { useFieldPopover, type PickerProps } from './useFieldPopover';
 
 const monthLabel = new Intl.DateTimeFormat('en', {

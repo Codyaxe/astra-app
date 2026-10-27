@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { Check, ChevronDown, X } from 'lucide-react';
-import type { Option } from './formModel';
-import { focus, input } from './styles';
+import type { Option } from '../formModel';
+import { focus, input } from '../../styles/styles';
 import { useFieldPopover, type PickerProps } from './useFieldPopover';
 
 export function SelectField({

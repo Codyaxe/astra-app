@@ -1,4 +1,4 @@
-import type { Service, ServiceRequest } from './types';
+import type { Service, ServiceRequest } from '../forms/types';
 
 /** Fictional examples for the backend handoff and contract checks. */
 export const requestExamples = {

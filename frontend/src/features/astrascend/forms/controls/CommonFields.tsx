@@ -4,15 +4,15 @@ import {
     requesterOptions,
     type ContactDraft,
     type FieldDefinition,
-} from './formModel';
-import type { FieldErrors, RequesterType } from './types';
+} from '../formModel';
+import type { FieldErrors, RequesterType } from '../types';
 import {
     contactGrid,
     disabled as disabledStyle,
     fieldError,
     focus,
     guidance,
-} from './styles';
+} from '../../styles/styles';
 
 export const CONSENT_TEXT =
     'I agree that ASTRA Developers may use these details to assess and coordinate this request and contact me about it. I understand that submission does not guarantee acceptance.';

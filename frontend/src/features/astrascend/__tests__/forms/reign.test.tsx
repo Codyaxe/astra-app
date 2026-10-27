@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
-import { ServiceFields } from '../../ServiceFields';
-import { createEmptyDrafts } from '../../RequestState';
-import { requestExamples } from '../../requestExamples';
-import { reign } from '../../forms/reign';
+import { ServiceFields } from '../../forms/ServiceFields';
+import { createEmptyDrafts } from '../../forms/RequestState';
+import { requestExamples } from '../../submission/requestExamples';
+import { reign } from '../../forms/serviceFields/reign';
 
 afterEach(cleanup);
 describe('REIGN', () => {

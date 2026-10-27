@@ -1,6 +1,6 @@
 # ASTRAscend frontend and backend handoff
 
-ASTRAscend has a public landing page, four service forms, and a submission receipt. The frontend collects answers and passes one object to `submitServiceRequest(request)` in [requestIntegration.ts](requestIntegration.ts).
+ASTRAscend has a public landing page, four service forms, and a submission receipt. The pages are in [pages/](pages/), reusable components are in [components/](components/), form controls and service definitions are in [forms/](forms/), request submission code is in [submission/](submission/), and the animated star background is in [background/](background/). The frontend collects answers and passes one object to `submitServiceRequest(request)` in [requestIntegration.ts](submission/requestIntegration.ts).
 
 **Current status: demo submissions only.** The function returns a demo receipt without making submission network calls, saving requests, or sending email. The broader ASTRA member app and its backend scaffolding remain separate.
 
@@ -29,7 +29,7 @@ Each request has four top-level properties. Only `details` changes between servi
 | `consent`   | Boolean / literal `true`                    | The requester agreed to assessment, coordination, and contact. It must be the Boolean `true`, not the string `"true"`. |
 | `details`   | Object / matching service details interface | Only the active service's applicable answers.                                                                          |
 
-The exact TypeScript interfaces and dropdown codes are in [types.ts](types.ts). Required-field and visibility rules are in [formModel.ts](formModel.ts) and the [service definitions](forms/).
+The exact TypeScript interfaces and dropdown codes are in [types.ts](forms/types.ts). Required-field and visibility rules are in [formModel.ts](forms/formModel.ts) and the [service definitions](forms/serviceFields/).
 
 - All answer values are strings, except the Boolean `consent`. Even participant descriptions and budgets are text in the current form.
 - Strings are trimmed. Blank optional fields are omitted; they are not sent as empty strings or `null`.

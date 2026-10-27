@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { ServiceFields } from '../../ServiceFields';
-import { createEmptyDrafts } from '../../RequestState';
-import { requestExamples } from '../../requestExamples';
-import { makeform } from '../../forms/makeform';
+import { ServiceFields } from '../../forms/ServiceFields';
+import { createEmptyDrafts } from '../../forms/RequestState';
+import { requestExamples } from '../../submission/requestExamples';
+import { makeform } from '../../forms/serviceFields/makeform';
 
 afterEach(cleanup);
 describe('MAKEFORM', () => {
