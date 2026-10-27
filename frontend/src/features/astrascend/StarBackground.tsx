@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react';
 import artwork from './assets/star-field.svg';
 import { createStars, starFrame } from './starMotion';
-
-const MASKS = '[data-as-star-mask]';
+import { measureStarMasks, starMaskOpacity, type StarMask } from './starMasks';
 
 /** One viewport canvas for the entire dark landing page, with original Figma sprites. */
 export function StarBackground() {
@@ -18,12 +17,12 @@ export function StarBackground() {
     let stars = createStars(mobile.matches);
     let width = 0, height = 0, elapsed = 0, previousTime = 0;
     let frame = 0, visible = true, disposed = false, dirty = true;
-    let masks: DOMRect[] = [];
+    let masks: StarMask[] = [];
     let bounds: DOMRect;
 
     const measure = () => {
       bounds = landing.getBoundingClientRect();
-      masks = [...landing.querySelectorAll<HTMLElement>(MASKS)].map(node => node.getBoundingClientRect());
+      masks = measureStarMasks(landing);
       dirty = false;
     };
     const draw = () => {
@@ -37,15 +36,16 @@ export function StarBackground() {
       for (const star of stars) {
         const position = starFrame(star, elapsed, width, height, reduced.matches);
         const [x, y, spriteWidth, spriteHeight] = star.source;
-        context.globalAlpha = position.opacity;
+        const visibility = starMaskOpacity(position.x + spriteWidth / 2, position.y + spriteHeight / 2,
+          Math.hypot(spriteWidth, spriteHeight) / 2, masks);
+        if (!visibility) continue;
+        context.globalAlpha = position.opacity * visibility;
         // Crop at render time from the unmodified 1440 × 750 original export.
         // A small transparent inset preserves the artwork's antialiased edges.
         context.drawImage(image, x - 2, y - 2, spriteWidth + 4, spriteHeight + 4,
           position.x - 2, position.y - 2, spriteWidth + 4, spriteHeight + 4);
       }
       context.restore();
-      // Keep stars in margins and section gaps, away from copy and card surfaces.
-      for (const mask of masks) context.clearRect(mask.left - 12, mask.top - 12, mask.width + 24, mask.height + 24);
     };
     const canRender = () => !disposed && visible && !document.hidden;
     const tick = (timestamp: number) => {
@@ -79,6 +79,9 @@ export function StarBackground() {
     landing.addEventListener('toggle', markDirty, true);
     document.addEventListener('visibilitychange', updateVisibility);
     reduced.addEventListener('change', updateMotion); mobile.addEventListener('change', updateCount);
+    const fonts = document.fonts;
+    fonts?.addEventListener('loadingdone', markDirty);
+    void fonts?.ready.then(() => { if (!disposed) markDirty(); });
     image.onload = render;
     image.src = artwork;
     resize();
@@ -88,6 +91,7 @@ export function StarBackground() {
       landing.removeEventListener('toggle', markDirty, true);
       document.removeEventListener('visibilitychange', updateVisibility);
       reduced.removeEventListener('change', updateMotion); mobile.removeEventListener('change', updateCount);
+      fonts?.removeEventListener('loadingdone', markDirty);
     };
   }, []);
   return <canvas ref={ref} className="pointer-events-none fixed inset-0 z-[1] h-full w-full" aria-hidden="true" />;
