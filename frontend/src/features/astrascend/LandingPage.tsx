@@ -2,7 +2,10 @@ import { Link } from 'react-router-dom';
 import mascot from './assets/mascot.png';
 import lightWave from './assets/wave-light.svg';
 import darkWave from './assets/wave-dark.svg';
+import glow from './assets/glow.svg';
 import { serviceCards } from './services';
+import { useAstrascendTheme } from './AstrascendLayout';
+import { StarBackground } from './StarBackground';
 
 const steps = [
   ['Browse and submit', 'Read the guidelines and send the form for your service.'],
@@ -20,8 +23,12 @@ const questions = [
 ];
 
 export function LandingPage() {
+  const theme = useAstrascendTheme();
   return <div className="as-landing">
+    {theme === 'dark' && <StarBackground />}
     <section className="as-hero">
+      <img className="as-hero-glow as-hero-glow--start" src={glow} alt="" width="660" height="660" />
+      <img className="as-hero-glow as-hero-glow--end" src={glow} alt="" width="660" height="660" />
       <img className="as-hero-wave as-wave-light" src={lightWave} alt="" />
       <img className="as-hero-wave as-wave-dark" src={darkWave} alt="" />
       <div className="as-container as-hero-inner">
