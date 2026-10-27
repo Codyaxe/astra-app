@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { measureStarMasks, starMaskOpacity, type StarMask } from './starMasks';
+import { measureStarMasks, starMaskOpacity, type StarMask } from '../starMasks';
 
 afterEach(() => { document.body.replaceChildren(); vi.restoreAllMocks(); });
 

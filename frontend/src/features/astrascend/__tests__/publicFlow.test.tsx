@@ -1,14 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { AstrascendLayout } from './AstrascendLayout';
-import { LandingPage } from './LandingPage';
-import { LegacyServiceRedirect, RequestPage, SuccessPage } from './RequestPage';
-import * as integration from './requestIntegration';
-import { requestExamples } from './requestExamples';
-import type { Service, ServiceRequest, SubmissionReceipt } from './types';
-import { definitions } from './services';
-import { requesterOptions } from './formModel';
+import { AstrascendLayout } from '../AstrascendLayout';
+import { LandingPage } from '../LandingPage';
+import { LegacyServiceRedirect, RequestPage, SuccessPage } from '../RequestPage';
+import * as integration from '../requestIntegration';
+import { requestExamples } from '../requestExamples';
+import type { Service, ServiceRequest, SubmissionReceipt } from '../types';
+import { definitions } from '../services';
+import { requesterOptions } from '../formModel';
 
 const receipt: SubmissionReceipt = { mode: 'demo', referenceNumber: 'DEMO-1234ABCD', submittedAt: '2026-10-27T12:00:00Z', confirmationEmailSent: false };
 function open(path = '/astrascend/request') {

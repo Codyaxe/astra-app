@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { FieldInput } from './FieldInput';
-import type { FieldDefinition } from './formModel';
-import { emailError, isValidDate } from './fieldValidation';
-import { calendarDays, dateKey, parseDate, shiftMonth } from './calendarDates';
-import { placeFieldPopover } from './useFieldPopover';
+import { FieldInput } from '../FieldInput';
+import type { FieldDefinition } from '../formModel';
+import { emailError, isValidDate } from '../fieldValidation';
+import { calendarDays, dateKey, parseDate, shiftMonth } from '../calendarDates';
+import { placeFieldPopover } from '../useFieldPopover';
 
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 const select: FieldDefinition = { name: 'format', label: 'Format', kind: 'select', placeholder: 'Choose an option', options: [

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render } from '@testing-library/react';
-import { StarBackground } from './StarBackground';
-import { createStars, DRIFT_SECONDS, starFrame } from './starMotion';
+import { StarBackground } from '../StarBackground';
+import { createStars, DRIFT_SECONDS, starFrame } from '../starMotion';
 
 afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 describe('specified star motion', () => {

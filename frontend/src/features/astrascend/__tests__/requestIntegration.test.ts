@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { requestExamples } from './requestExamples';
-import { normalizeSubmissionError, SubmissionError, submitServiceRequest } from './requestIntegration';
-import { SERVICES, type ServiceRequest } from './types';
+import { requestExamples } from '../requestExamples';
+import { normalizeSubmissionError, SubmissionError, submitServiceRequest } from '../requestIntegration';
+import { SERVICES, type ServiceRequest } from '../types';
 
 afterEach(() => vi.restoreAllMocks());
 
