@@ -20,10 +20,20 @@ export function RequestPage() {
   const inFlight = useRef(false);
   const mounted = useRef(true);
   const form = useRef<HTMLFormElement>(null);
+  const focusErrors = useRef(false);
   const navigate = useNavigate();
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   useEffect(() => { setErrors({}); setMessage(''); }, [service]);
-  useEffect(() => { if (Object.keys(errors).length) form.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus(); }, [errors]);
+  useEffect(() => {
+    if (focusErrors.current) { focusErrors.current = false; form.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus(); }
+  }, [errors]);
+  const clearErrors = (paths: string[]) => {
+    setErrors(current => {
+      if (!paths.some(path => path in current)) return current;
+      const next = { ...current }; paths.forEach(path => delete next[path]); return next;
+    });
+    setMessage('');
+  };
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (inFlight.current) return;
@@ -44,6 +54,7 @@ export function RequestPage() {
     } catch (error) {
       if (mounted.current) {
         const failure = normalizeSubmissionError(error);
+        focusErrors.current = Object.keys(failure.fieldErrors).length > 0;
         setErrors(failure.fieldErrors); setMessage(failure.message);
       }
     } finally {
@@ -51,7 +62,7 @@ export function RequestPage() {
       if (mounted.current) setPending(false);
     }
   };
-  const fieldProps = { errors, disabled: pending, onChange: (field: string, value: string) => state.updateDetail(service, field, value) };
+  const fieldProps = { errors, disabled: pending, onChange: (field: string, value: string) => { state.updateDetail(service, field, value); clearErrors([`details.${field}`]); } };
   return <div className="bg-ascend-form pb-16 pt-10 as-compact:pb-[43px] as-compact:pt-[29px]"><div className={container}>
     <div className="mb-10 md:mb-16 as-compact:mb-[29px]"><span className={badge()}>TAKE THE FIRST STEP</span><h1 className={`${heading} my-3 text-[clamp(34px,4vw,48px)] as-compact:text-[clamp(32px,2.7vw,36px)]`}>Tell us what you have in mind.</h1><p className="text-[18px] font-medium text-ascend-muted as-compact:text-[16px]">A service request, a partnership, or an opportunity worth exploring.</p></div>
     <form className={`${panel} flex flex-col gap-6 px-4 py-6 sm:p-6 md:p-8 as-compact:p-[22px]`} ref={form} onSubmit={submit} noValidate aria-busy={pending}>
@@ -63,7 +74,10 @@ export function RequestPage() {
           {service === card.service && <span className="absolute right-2.5 top-3 rounded-[999px] bg-ascend-blue px-2 py-1 text-[11px] font-bold text-white" aria-hidden="true">✓ Selected</span>}
         </label>)}</div>
       </fieldset>
-      <fieldset className={formSection} disabled={pending}><legend className={formLegend}><span className="text-[13px] text-ascend-accent">02</span> Introduce yourself</legend><ContactFields value={state.contact} onChange={state.setContact} errors={errors} disabled={pending} /></fieldset>
+      <fieldset className={formSection} disabled={pending}><legend className={formLegend}><span className="text-[13px] text-ascend-accent">02</span> Introduce yourself</legend><ContactFields value={state.contact} onChange={next => {
+        clearErrors((['fullName', 'email', 'organization', 'type'] as const).filter(field => next[field] !== state.contact[field]).map(field => `requester.${field}`));
+        state.setContact(next);
+      }} errors={errors} disabled={pending} /></fieldset>
       <fieldset className={formSection} disabled={pending}><legend className={formLegend}><span className="text-[13px] text-ascend-accent">03</span> {definitions[service].heading}</legend>
         {service === 'makeform' && <ServiceFields definition={definitions.makeform} draft={state.drafts.makeform} {...fieldProps} />}
         {service === 'upshift' && <ServiceFields definition={definitions.upshift} draft={state.drafts.upshift} {...fieldProps} />}
