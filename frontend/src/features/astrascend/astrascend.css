@@ -69,7 +69,7 @@
 .astrascend[data-theme='dark'] .as-wave-dark { display: block; }
 .astrascend[data-theme='dark'] .as-wave-light { display: none; }
 .astrascend[data-theme='dark'] .as-hero { background: #070c1d; }
-.astrascend .as-mascot { position: relative; width: 100%; height: 520px; overflow: hidden; border-radius: 32px; }
+.astrascend .as-mascot { position: relative; width: 100%; aspect-ratio: 500 / 520; overflow: hidden; border-radius: 32px; }
 .astrascend .as-mascot img { position: absolute; max-width: none; width: 310.08%; height: 113.42%; left: -193.8%; top: -13.42%; }
 .astrascend[data-theme='dark'] .as-mascot { box-shadow: 0 0 24px #1b63eb33, 0 24px 48px -12px #0006; }
 .astrascend .as-audience { background: var(--as-selected); padding-block: 28px; }
@@ -195,7 +195,6 @@
   .astrascend .as-brand small { display: none; }
   .astrascend .as-nav { gap: 20px; }
   .astrascend .as-hero-inner { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: 36px; }
-  .astrascend .as-mascot { height: 460px; }
   .astrascend .as-service-card { padding-inline: 16px; }
   .astrascend .as-service-card h3 { font-size: 26px; }
   .astrascend .as-steps li { padding-inline: 16px; }
@@ -206,7 +205,6 @@
   .astrascend .as-nav { display: none; flex: 0 0 100%; order: 3; padding-block: 12px; flex-wrap: wrap; justify-content: flex-start; }
   .astrascend .as-nav--open { display: flex; }
   .astrascend .as-hero-inner { padding-block: 64px; }
-  .astrascend .as-mascot { height: 420px; }
   .astrascend .as-hero-copy { gap: 24px; }
   .astrascend .as-hero h1 { font-size: 64px; }
   .astrascend .as-hero p { font-size: 18px; }

@@ -38,7 +38,7 @@ export function LandingPage() {
           <p>A campus full of possibilities. A community ready to build. Bring your ideas to ASTRA Developers and turn possibility into meaningful impact.</p>
           <div className="as-actions"><Link className="as-button" to="/astrascend/request">Let’s build something ↗</Link><Link className="as-button as-button--white" to="#services">Explore our services ↓</Link></div>
         </div>
-        <div className="as-mascot"><img src={mascot} alt="ASTRA's blue astronaut mascot reaching for new heights" fetchPriority="high" /></div>
+        <div className="as-mascot"><img src={mascot} alt="ASTRA's blue astronaut mascot reaching for new heights" /></div>
       </div>
     </section>
     <div className="as-audience"><div className="as-container"><strong>OPEN TO IDEAS FROM</strong><span>Students</span><span>Campus organizations</span><span>Community groups</span><span>Industry partners</span></div></div>
