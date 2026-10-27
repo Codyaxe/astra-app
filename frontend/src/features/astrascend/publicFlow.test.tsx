@@ -7,6 +7,8 @@ import { LegacyServiceRedirect, RequestPage, SuccessPage } from './RequestPage';
 import * as integration from './requestIntegration';
 import { requestExamples } from './requestExamples';
 import type { Service, ServiceRequest, SubmissionReceipt } from './types';
+import { definitions } from './services';
+import { requesterOptions } from './formModel';
 
 const receipt: SubmissionReceipt = { mode: 'demo', referenceNumber: 'DEMO-1234ABCD', submittedAt: '2026-10-27T12:00:00Z', confirmationEmailSent: false };
 function open(path = '/astrascend/request') {
@@ -20,7 +22,14 @@ function open(path = '/astrascend/request') {
 function change(name: string, value: string) {
   const field = document.querySelector<HTMLInputElement>(`[name="${name}"]`);
   if (!field) throw new Error(`Missing field: ${name}`);
-  fireEvent.change(field, { target: { value } });
+  if (field.type === 'hidden') {
+    const trigger = field.parentElement?.querySelector('[role="combobox"]');
+    const options = name === 'type' ? requesterOptions : Object.values(definitions).flatMap(definition => definition.fields.filter(item => item.name === name).flatMap(item => item.options || []));
+    const option = options.find(item => item.value === value);
+    if (!trigger || !option) throw new Error(`Missing choice: ${name}=${value}`);
+    fireEvent.click(trigger);
+    fireEvent.click(screen.getByRole('option', { name: option.label }));
+  } else fireEvent.change(field, { target: { value } });
 }
 function fill(request: ServiceRequest) {
   for (const [name, value] of Object.entries(request.requester)) change(name, value);
@@ -63,6 +72,8 @@ describe('public request flow', () => {
     expect(document.activeElement).toBe(screen.getByLabelText(/Full name/));
     expect((screen.getByLabelText(/Project or request title/) as HTMLInputElement).value).toBe('Keep my answer');
     expect(submit).not.toHaveBeenCalled();
+    change('fullName', 'A');
+    expect(document.activeElement).toBe(screen.getByLabelText(/Full name/));
   });
   it('prevents duplicate requests while pending and lets the user retry a normalized failure', async () => {
     let reject!: (error: Error) => void;
@@ -98,8 +109,16 @@ describe('public request flow', () => {
     expect(screen.getByRole('link', { name: 'Explore opportunities' }).getAttribute('href')).toBe('/astrascend/request?service=reign');
     expect(screen.queryByRole('link', { name: 'Opportunities' })).toBeNull();
     expect(screen.queryByRole('link', { name: /Track/ })).toBeNull();
-    expect(screen.queryByRole('link', { name: /Discord/ })).toBeNull();
-    expect(screen.getByText('Invite link coming soon').getAttribute('aria-disabled')).toBe('true');
+    const discordLinks = screen.getAllByRole('link', { name: 'Join ASTRA Developers on Discord (opens in a new tab)' });
+    expect(discordLinks).toHaveLength(2);
+    for (const link of discordLinks) {
+      expect(link.getAttribute('href')).toBe('https://discord.gg/NRvkKxkNxG');
+      expect(link.getAttribute('target')).toBe('_blank');
+      expect(link.getAttribute('rel')).toBe('noopener noreferrer');
+    }
+    expect(screen.getByRole('link', { name: 'Community' }).getAttribute('href')).toBe('/astrascend#community');
+    expect(screen.queryByText('Invite link coming soon')).toBeNull();
+    expect(screen.getByText('Coming soon')).toBeDefined();
   });
   it('hides the floating theme control away from the top and restores keyboard access on return', () => {
     const removeListener = vi.spyOn(window, 'removeEventListener');

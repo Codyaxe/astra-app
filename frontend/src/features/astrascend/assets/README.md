@@ -6,4 +6,6 @@ The blue mark, white mark, and white wordmark are unmodified copies supplied by 
 
 Urbanist weights 400, 500, 600, and 700 are self-hosted Google Fonts files. See `Urbanist-OFL.txt` for the font license. The CSS family name is feature-specific; it does not change the member app typography.
 
+`DiscordLink.tsx` renders the Discord mark from [Simple Icons](https://github.com/simple-icons/simple-icons/blob/develop/icons/discord.svg) as a local, single-color SVG in the community card and footer. The app card uses the original blue or white ASTRA mark to match the active theme.
+
 The dark hero glow and star field are unmodified Figma exports. `starMotion.ts` records the 69 star rectangles from frame `38:73`; the canvas draws each sprite directly from the original SVG, with separate depth and twinkle timing. Mobile uses 35 of these stars. The same canvas spans all dark landing sections and masks text and cards; request pages do not mount it.
