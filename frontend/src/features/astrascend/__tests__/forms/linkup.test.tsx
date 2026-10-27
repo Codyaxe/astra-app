@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { ServiceFields } from '../ServiceFields';
-import { createEmptyDrafts } from '../RequestState';
-import { requestExamples } from '../requestExamples';
-import { linkup } from './linkup';
+import { ServiceFields } from '../../ServiceFields';
+import { createEmptyDrafts } from '../../RequestState';
+import { requestExamples } from '../../requestExamples';
+import { linkup } from '../../forms/linkup';
 
 afterEach(cleanup);
 describe('LINKUP', () => {

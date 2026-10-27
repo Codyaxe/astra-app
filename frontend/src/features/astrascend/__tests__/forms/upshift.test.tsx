@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { ServiceFields } from '../ServiceFields';
-import { createEmptyDrafts } from '../RequestState';
-import { requestExamples } from '../requestExamples';
-import { upshift } from './upshift';
+import { ServiceFields } from '../../ServiceFields';
+import { createEmptyDrafts } from '../../RequestState';
+import { requestExamples } from '../../requestExamples';
+import { upshift } from '../../forms/upshift';
 
 afterEach(cleanup);
 describe('UPSHIFT', () => {
