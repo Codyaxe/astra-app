@@ -9,6 +9,7 @@ export function SubmissionReceiptView({ receipt, onStartAnother }: { receipt: Su
     <h1 id="as-receipt-heading">{demo ? 'Demo request received' : 'Request received'}</h1>
     <p>Your {demo ? 'demo ' : ''}reference number</p>
     <output className="as-reference" aria-label="Reference number">{receipt.referenceNumber}</output>
+    <p className="as-muted">Submitted <time dateTime={receipt.submittedAt}>{new Date(receipt.submittedAt).toLocaleString()}</time></p>
     {demo && <p className="as-demo-notice" role="status">This is a demonstration. No request was saved and no confirmation email was sent.</p>}
     <div className="as-receipt-next as-panel">
       <h2>What happens next?</h2>
