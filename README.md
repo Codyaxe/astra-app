@@ -85,12 +85,12 @@ A mobile-first web application monorepo for the **ASTRA Developers App**, built 
         │   └── QRCode.tsx
         ├── context/
         │   └── AuthContext.tsx
+        ├── features/
+        │   └── astrascend/         # Public pages, forms, integration, assets, and tests
         ├── lib/
         │   ├── apiClient.ts
         │   └── firebase.ts
         └── pages/
-            ├── AstrascendHub.tsx
-            ├── AstrascendService.tsx
             ├── CheckIn.tsx
             ├── DigitalID.tsx
             ├── Home.tsx
@@ -105,6 +105,15 @@ A mobile-first web application monorepo for the **ASTRA Developers App**, built 
 ```
 
 ---
+
+## ASTRAscend public demo
+
+ASTRAscend is available at `/astrascend`, with public service forms at
+`/astrascend/request?service=makeform|upshift|linkup|reign`. Existing service
+URLs remain compatible; `ascent` maps to `reign`. Submissions currently produce
+demo receipts without saving requests or sending email. See the
+[submission contract and examples](frontend/src/features/astrascend/README.md)
+for the backend handoff.
 
 ## Security Policy: Secrets via Environment Variables Only
 
