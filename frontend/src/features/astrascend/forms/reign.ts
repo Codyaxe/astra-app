@@ -22,6 +22,7 @@ const fields: readonly (FieldDefinition & { name: keyof ReignDetails })[] = [
 ];
 
 export const reign = defineService('reign', 'Opportunities', fields, draft => {
+  if (!draft.intent) return ['intent'];
   if (draft.intent === 'find_competition') return ['intent', 'skills', 'eligibility', 'assistanceNeeded'];
   if (draft.intent === 'share_opportunity') return fields.filter(field => field.name !== 'teamStatus').map(field => field.name);
   return fields.map(field => field.name);

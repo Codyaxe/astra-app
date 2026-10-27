@@ -11,6 +11,15 @@ describe('REIGN', () => {
   const contact = { ...sample.requester, organization: '' };
   const draft = { ...createEmptyDrafts().reign, ...sample.details };
 
+  it('shows only the intent until a request type is selected', () => {
+    const initial = createEmptyDrafts().reign;
+    render(<ServiceFields definition={reign} draft={initial} onChange={vi.fn()} />);
+    expect(screen.getAllByRole('combobox')).toHaveLength(1);
+    expect(screen.getByRole('combobox', { name: 'What would you like to do?' })).toBeDefined();
+    expect(screen.queryByRole('textbox')).toBeNull();
+    expect(reign.visibleFields(initial).map(field => field.name)).toEqual(['intent']);
+  });
+
   it('shows only the agreed fields for competition search', () => {
     render(<ServiceFields definition={reign} draft={{ ...draft, intent: 'find_competition' }} onChange={vi.fn()} />);
     expect(screen.getAllByRole('textbox')).toHaveLength(2);
