@@ -13,8 +13,9 @@ import { CheckIn } from './pages/CheckIn.js';
 import { Marketplace } from './pages/Marketplace.js';
 import { VoucherDetails } from './pages/VoucherDetails.js';
 import { PartnerInstructions } from './pages/PartnerInstructions.js';
-import { AstrascendHub } from './pages/AstrascendHub.js';
-import { AstrascendService } from './pages/AstrascendService.js';
+import { AstrascendLayout } from './features/astrascend/components/AstrascendLayout.js';
+import { LandingPage } from './features/astrascend/pages/LandingPage.js';
+import { RequestPage, SuccessPage, LegacyServiceRedirect } from './features/astrascend/pages/RequestPage.js';
 import { Opportunities } from './pages/Opportunities.js';
 
 export const App: React.FC = () => {
@@ -23,6 +24,12 @@ export const App: React.FC = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/astrascend" element={<AstrascendLayout />}>
+            <Route index element={<LandingPage />} />
+            <Route path="request" element={<RequestPage />} />
+            <Route path="request/success" element={<SuccessPage />} />
+            <Route path="service/:serviceId" element={<LegacyServiceRedirect />} />
+          </Route>
           <Route element={<AppShell />}>
             <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/id" element={<ProtectedRoute><DigitalID /></ProtectedRoute>} />
@@ -33,8 +40,6 @@ export const App: React.FC = () => {
             <Route path="/marketplace" element={<ProtectedRoute><Marketplace /></ProtectedRoute>} />
             <Route path="/vouchers/:id" element={<ProtectedRoute><VoucherDetails /></ProtectedRoute>} />
             <Route path="/partner-instructions" element={<PartnerInstructions />} />
-            <Route path="/astrascend" element={<ProtectedRoute><AstrascendHub /></ProtectedRoute>} />
-            <Route path="/astrascend/service/:serviceId" element={<ProtectedRoute><AstrascendService /></ProtectedRoute>} />
             <Route path="/opportunities" element={<ProtectedRoute><Opportunities /></ProtectedRoute>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
