@@ -1,5 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
 import { useContext } from 'react';
 import {
   MemoryRouter,
@@ -56,5 +62,46 @@ describe('request scroll behavior', () => {
         { replace: true, preventScrollReset: true }
       );
     }
+  });
+
+  it('does not reset the page when switching among all four services', () => {
+    open();
+    vi.stubGlobal('scrollY', 320);
+    vi.mocked(window.scrollTo).mockClear();
+    for (const service of ['upshift', 'linkup', 'reign', 'makeform']) {
+      const radio = screen.getByRole('radio', {
+        name: new RegExp(service, 'i'),
+      }) as HTMLInputElement;
+      fireEvent.click(radio);
+      expect(radio.checked).toBe(true);
+      expect(window.scrollTo).not.toHaveBeenCalled();
+    }
+  });
+
+  it('scrolls to the top on initial entry and when navigating between pages', () => {
+    open();
+    expect(window.scrollTo).toHaveBeenCalledExactlyOnceWith({ top: 0 });
+    vi.mocked(window.scrollTo).mockClear();
+    fireEvent.click(screen.getByRole('link', { name: 'ASTRAscend home' }));
+    expect(window.scrollTo).toHaveBeenCalledExactlyOnceWith({ top: 0 });
+    vi.mocked(window.scrollTo).mockClear();
+    fireEvent.click(screen.getByRole('link', { name: 'Start a request' }));
+    expect(window.scrollTo).toHaveBeenCalledExactlyOnceWith({ top: 0 });
+  });
+
+  it('scrolls to a new anchor and preserves position on later query changes', () => {
+    const navigator = open();
+    const target = document.getElementById('as-main')!;
+    const scrollIntoView = vi.fn();
+    target.scrollIntoView = scrollIntoView;
+    vi.mocked(window.scrollTo).mockClear();
+    act(() => navigator.push('/astrascend/request?service=makeform#as-main'));
+    expect(scrollIntoView).toHaveBeenCalledExactlyOnceWith({
+      behavior: 'instant',
+    });
+    scrollIntoView.mockClear();
+    act(() => navigator.replace('/astrascend/request?service=upshift#as-main'));
+    expect(scrollIntoView).not.toHaveBeenCalled();
+    expect(window.scrollTo).not.toHaveBeenCalled();
   });
 });
