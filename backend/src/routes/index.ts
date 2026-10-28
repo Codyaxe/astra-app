@@ -22,7 +22,7 @@ import {
   getVouchersMeStub,
   getVoucherByIdStub,
 } from '../controllers/perksAndVouchersController.js';
-import { getOpportunitiesStub } from '../controllers/astrascendController.js';
+import { getOpportunitiesStub, submitServiceRequest } from '../controllers/astrascendController.js';
 
 export const router = Router();
 
@@ -54,3 +54,4 @@ router.get('/vouchers/:id', authMiddleware, getVoucherByIdStub);
 
 // ASTRAscend routes
 router.get('/astrascend/opportunities', getOpportunitiesStub);
+router.post('/astrascend/requests', submitServiceRequest);

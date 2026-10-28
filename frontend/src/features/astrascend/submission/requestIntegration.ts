@@ -23,12 +23,30 @@ export function normalizeSubmissionError(error: unknown): SubmissionError {
     );
 }
 
+const API_URL = (
+    import.meta.env.VITE_API_URL ?? 'http://localhost:4000'
+).replace(/\/$/, '');
+
+interface BackendIssue {
+    path?: (string | number)[];
+    message?: string;
+}
+
+function issuesToFieldErrors(issues: unknown): FieldErrors {
+    const errors: FieldErrors = {};
+    if (!Array.isArray(issues)) return errors;
+    for (const issue of issues as BackendIssue[]) {
+        const key = issue.path?.[issue.path.length - 1];
+        if (key !== undefined && !(String(key) in errors)) {
+            errors[String(key)] = issue.message ?? 'Invalid value';
+        }
+    }
+    return errors;
+}
+
 /**
  * The only submission boundary used by the ASTRAscend UI.
- * Replace this function's internals with the agreed API transport later.
- * Map that API's payload, receipt, auth headers and errors here, preserving
- * ServiceRequest, SubmissionReceipt and SubmissionError for the callers.
- * This demo never sends or stores the submitted personal information.
+ * Sends the request to POST {VITE_API_URL}/astrascend/requests.
  */
 export async function submitServiceRequest(
     request: ServiceRequest,
@@ -40,11 +58,41 @@ export async function submitServiceRequest(
         );
     }
 
-    await Promise.resolve();
+    let response: Response;
+    try {
+        response = await fetch(`${API_URL}/astrascend/requests`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(request),
+        });
+    } catch {
+        throw new SubmissionError(
+            'Could not reach the server. Check your connection and try again.',
+            'network',
+        );
+    }
+
+    if (response.status === 400) {
+        const body = await response.json().catch(() => ({}));
+        throw new SubmissionError(
+            'Please check the highlighted fields.',
+            'validation',
+            issuesToFieldErrors((body as { issues?: unknown }).issues),
+        );
+    }
+
+    if (!response.ok) {
+        throw new SubmissionError(
+            'Your request could not be submitted. Please try again.',
+            'unknown',
+        );
+    }
+
+    const data = (await response.json()) as { referenceNumber: string };
 
     return {
-        mode: 'demo',
-        referenceNumber: `DEMO-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
+        mode: 'live',
+        referenceNumber: data.referenceNumber,
         submittedAt: new Date().toISOString(),
         confirmationEmailSent: false,
     };
