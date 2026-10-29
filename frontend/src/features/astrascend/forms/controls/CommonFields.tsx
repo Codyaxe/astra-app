@@ -94,28 +94,33 @@ export function ConsentField({
     disabled?: boolean;
 }) {
     const id = useId();
+    const labelId = `${id}-text`;
     return (
         <div>
-            <label
-                className="flex items-start gap-3 text-[14px] text-ascend-muted"
-                htmlFor={id}
-            >
+            <div className="flex items-start gap-3">
                 <input
-                    className={`mt-px h-[22px] w-[22px] shrink-0 basis-[22px] accent-ascend-blue aria-[invalid=true]:border-ascend-error ${focus} ${disabledStyle}`}
+                    className={`mt-0.5 h-[20px] w-[20px] shrink-0 cursor-pointer rounded border border-ascend-field accent-ascend-blue aria-[invalid=true]:border-ascend-error ${focus} ${disabledStyle}`}
                     id={id}
                     name="consent"
                     type="checkbox"
                     required
                     checked={checked}
                     disabled={disabled}
+                    aria-labelledby={labelId}
                     aria-invalid={error ? true : undefined}
                     aria-describedby={error ? `${id}-error` : undefined}
                     onChange={(event) => onChange(event.target.checked)}
                 />
-                <span>
-                    {CONSENT_TEXT} <span aria-hidden="true">*</span>
+                <span
+                    id={labelId}
+                    className="text-[14px] leading-relaxed text-ascend-muted"
+                >
+                    {CONSENT_TEXT}
+                    <span className="whitespace-nowrap font-medium text-ascend-ink" aria-hidden="true">
+                        &nbsp;*
+                    </span>
                 </span>
-            </label>
+            </div>
             {error && (
                 <p className={fieldError} id={`${id}-error`}>
                     {error}
