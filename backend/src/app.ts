@@ -19,3 +19,5 @@ app.use('/', router);
 
 // Error handling middleware
 app.use(errorHandler);
+
+app.get("/health", (_req, res) => res.json({ ok: true }));
