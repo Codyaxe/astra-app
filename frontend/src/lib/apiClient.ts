@@ -1,5 +1,5 @@
 // Thin fetch wrapper with base URL from environment
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 
 export async function apiClient<T>(
   endpoint: string,
