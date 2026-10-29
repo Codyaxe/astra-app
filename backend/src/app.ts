@@ -21,3 +21,5 @@ app.use('/', router);
 app.use(errorHandler);
 
 app.get("/health", (_req, res) => res.json({ ok: true }));
+
+export default app;
