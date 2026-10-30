@@ -130,7 +130,7 @@ Store these codes, such as `mobile_app`, rather than their display labels, such 
 | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | `requester.type`                      | `student`, `astra_member`, `campus_organization`, `college`, `community_group`, `external_partner`, `other`             |
 | MAKEFORM `details.serviceType`        | `website`, `mobile_app`, `ui_ux`, `ai_ml`, `cloud`, `other`                                                             |
-| UPSHIFT `details.learningSupportType` | `technical_consultation`, `mentorship`, `workshop`, `career_talk`, `thesis`, `other`                                    |
+| UPSHIFT `details.learningSupportType` | `technical_consultation`, `mentorship`, `workshop`, `career_talk`, `other`                                              |
 | UPSHIFT `details.experienceLevel`     | `beginner`, `intermediate`, `advanced`, `not_sure`                                                                      |
 | UPSHIFT `details.preferredFormat`     | `online`, `in_person`, `hybrid`                                                                                         |
 | LINKUP `details.partnershipType`      | `event`, `sponsorship`, `technical_collaboration`, `organization_partnership`, `resource_sharing`, `app_perks`, `other` |

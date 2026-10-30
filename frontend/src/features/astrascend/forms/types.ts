@@ -39,7 +39,6 @@ export interface UpshiftDetails {
         | 'mentorship'
         | 'workshop'
         | 'career_talk'
-        | 'thesis'
         | 'other';
     topic: string;
     experienceLevel?: 'beginner' | 'intermediate' | 'advanced' | 'not_sure';

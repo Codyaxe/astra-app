@@ -16,7 +16,6 @@ export const upshift = defineService('upshift', 'Tell us what you need', [
             { value: 'mentorship', label: 'Mentorship' },
             { value: 'workshop', label: 'Workshop' },
             { value: 'career_talk', label: 'Career talk' },
-            { value: 'thesis', label: 'Thesis' },
             { value: 'other', label: 'Others' },
         ],
     },
@@ -25,7 +24,7 @@ export const upshift = defineService('upshift', 'Tell us what you need', [
         label: 'What topic or skill would you like to focus on?',
         required: true,
         fullWidth: true,
-        placeholder: 'e.g. Web development, UI/UX, thesis',
+        placeholder: 'e.g. Web development, UI/UX',
     },
     {
         name: 'experienceLevel',

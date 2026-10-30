@@ -44,7 +44,6 @@ const upshiftDetails = z.object({
     'mentorship',
     'workshop',
     'career_talk',
-    'thesis',
     'other',
   ]),
   topic: text,
