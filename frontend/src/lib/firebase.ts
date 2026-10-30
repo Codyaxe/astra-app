@@ -1,5 +1,4 @@
 // Initializes the Firebase client app from environment variables only
-export const firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
 import { initializeApp, getApps, getApp } from 'firebase/app';
 
 const firebaseConfig = {
@@ -11,8 +10,4 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-
-
+export const firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
