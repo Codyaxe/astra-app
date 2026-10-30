@@ -277,16 +277,12 @@ export function RequestPage() {
               error={errors.consent}
               disabled={pending}
             />
-            <p className="my-4 text-[14px] text-ascend-muted">
-              Demo mode: this form shows the submission flow. It does not save a
-              request or send email.
-            </p>
             <button className={button()} type="submit" disabled={pending}>
-              {pending ? 'Submitting demo…' : 'Submit my request ↗'}
+              {pending ? 'Submitting…' : 'Submit my request ↗'}
             </button>
             {pending && (
               <p role="status" className="text-ascend-muted">
-                Preparing your demo receipt…
+                Sending your request…
               </p>
             )}
           </fieldset>

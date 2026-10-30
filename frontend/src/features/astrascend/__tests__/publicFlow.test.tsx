@@ -191,7 +191,7 @@ describe('public request flow', () => {
         expect(
             (
                 screen.getByRole('button', {
-                    name: 'Submitting demo…',
+                    name: 'Submitting…',
                 }) as HTMLButtonElement
             ).disabled,
         ).toBe(true);
